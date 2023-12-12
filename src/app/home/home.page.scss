@@ -1,0 +1,24 @@
+.container{
+  height: 90%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.button-container{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ion-button.joinbtn{
+  background-color:var( --ion-color-viewer_secundary);
+  color: var(--ion-color-funaprimary-contrast);
+}
+
+ion-button.skip{
+  border-radius: 30px;
+  background-color:var( --ion-color-viewer_secundary);
+
+}

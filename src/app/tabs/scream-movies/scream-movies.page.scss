@@ -1,0 +1,162 @@
+ion-toolbar{
+    --border-width: 0 !important;
+}
+
+
+ion-avatar.miniAvatar{
+    max-width: 30px !important;  //any size
+    max-height: 30px !important;
+    margin-left: 10px;
+    }
+
+.header-md::after{
+    background: none !important;
+}
+
+.container h1{
+    margin-top: 0;
+}
+
+.backbtn{
+    background-color: skyblue;
+    margin-left: 10px;
+    border-radius: 10px;
+}
+
+.form-container{
+    margin-top: 50px;
+}
+
+ion-content{
+    margin-left: 11px;
+    margin-right: 11px;
+}
+
+ion-thumbnail.P_image{
+    height: 400px;
+    width: 280px;
+    text-align: center;
+    justify-content: center;
+}
+
+.rating-list3{
+    width: 55px;
+    display: inline-block;
+    list-style: none;
+}
+
+.rating-list3 li{
+    font-size: 20px;
+    float: right;
+    color: #ddd;
+}
+
+
+.rating-list2{
+    width: 55px;
+    display: inline-block;
+    list-style: none;
+}
+
+.rating-list2 li{
+    font-size: 20px;
+    float: right;
+    color: #ddd;
+   
+}
+
+.rating-list{
+    width: 1px;
+    display: inline-block;
+    list-style: none;
+}
+
+.rating-list li{
+    font-size: 20px;
+    float: right;
+    color: #ddd;
+   
+}
+
+.rating-list li:hover{
+    color: #ffd700;
+}
+
+.rating-list li:hover ~ li{
+    color: #ffd700;
+}
+
+.rating-list li.selected{
+    color: #ffd700;
+}
+
+ion-thumbnail.video_trailer{
+    width: 360px;
+    height: 202px;
+}
+
+ion-badge{
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+}
+
+ion-button.whatchbtn{
+    margin-left: 12px ;
+    margin-right: 12px;
+}
+
+ion-label.title{
+    border-left: solid 3px var(--ion-color-viewer_terceari);
+    margin-left: 7px;
+    font-size: 18px;
+    }
+
+
+ion-icon.verified{
+    height: 15px;
+    width: 15px;
+
+}
+
+img.S_frontpage{
+    height: 152px;
+    width: 108px;
+  }
+
+ion-card-subtitle.review{
+    border-left: solid 3px var(--ion-color-viewer_terceari);
+    margin-left: 7px;
+    font-size: 18px;
+    color: var(--ion-color-viewer_terceari);
+}
+
+.transparent-bg {
+    position: relative;
+  }
+  
+.bg-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    opacity: 0.5;
+  }
+
+  .iframe-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* Ratio 16:9 (100%/16*9 = 56.25%) */
+  }
+  
+  .iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }

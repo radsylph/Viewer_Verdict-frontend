@@ -1,0 +1,364 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear">
+      <ion-button
+        color="funaprimary"
+        class="backbtn"
+        
+        (click)="gotToDiscover()"
+        ><ion-icon name="arrow-back-outline"></ion-icon
+      ></ion-button>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-img
+      class="S_frontpage"
+      [src]="movieDetails.posters[0]"
+      alt="avatar"
+    ></ion-img>
+  </ion-card>
+  <ion-card class="transparent-bg" style="color: white">
+    <div
+      class="bg-image"
+      [style.backgroundImage]="'url(' + movieDetails.posters[1] + ')'"
+    ></div>
+    <ion-card-header>
+      <ion-card-title
+        [innerHTML]="movieDetails.title"
+        style="color: white; font-weight: bold"
+      ></ion-card-title>
+      <ion-card-content
+        [innerHTML]="movieDetails.tagline"
+        style="color: white; font-weight: semi-bold"
+      >
+      </ion-card-content>
+      <ion-card-subtitle
+        ><label style="color: white" for="">type:</label
+        ><ion-chip class="serie_movie" color="secondary"
+          >Movie</ion-chip
+        ></ion-card-subtitle
+      >
+      <ion-card-subtitle style="color: white"
+        ><label for="">Release Date :</label
+        ><ion-chip
+          class="serie_movie"
+          color="secondary"
+          [innerHTML]="movieDetails.releaseDate"
+        ></ion-chip
+      ></ion-card-subtitle>
+      <ion-card-subtitle
+        ><label for="" style="color: white">Runtime:</label
+        ><ion-chip
+          class="serie_movie"
+          color="secondary"
+          [innerHTML]="movieDetails.runtime + ' minutes'"
+        ></ion-chip
+      ></ion-card-subtitle>
+      <ion-card-subtitle
+        ><label for="" style="color: white">Genre/s:</label>
+        <ion-chip
+          class="gender"
+          color="secondary"
+          *ngFor="let genre of movieDetails.genres; let i = index"
+          [innerHTML]="movieDetails.genres[i]"
+        ></ion-chip>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content [innerHTML]="movieDetails.overview"> </ion-card-content>
+  </ion-card>
+
+  <ion-button class="whatchbtn" expand="block"
+    ><ion-icon name="add-circle-outline"></ion-icon>Wacht list</ion-button
+  >
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>XX vote for the critics</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">
+        <ul
+          class="list-inline rating-list"
+          *ngFor="let star of stars; let i=index"
+        >
+          <li
+            (click)="countStar(star)"
+            [ngClass]="{'selected': (star <= selectedValue)}"
+            (mouseover)="addClass(star)"
+            (mouseout)="removeClass()"
+          >
+            <span class="material-icons"
+              ><ion-icon name="star"></ion-icon
+            ></span>
+          </li>
+        </ul>
+      </ion-col>
+      <ion-col>
+        <ion-thumbnail>
+          <ion-badge>5</ion-badge>
+        </ion-thumbnail>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>XX vote for the audience</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">
+        <ul
+          class="list-inline rating-list"
+          *ngFor="let star of stars; let i=index"
+        >
+          <li
+            (click)="countStar(star)"
+            [ngClass]="{'selected': (star <= selectedValue)}"
+            (mouseover)="addClass(star)"
+            (mouseout)="removeClass()"
+          >
+            <span class="material-icons"
+              ><ion-icon name="star"></ion-icon
+            ></span>
+          </li>
+        </ul>
+      </ion-col>
+      <ion-col>
+        <ion-thumbnail>
+          <ion-badge>5</ion-badge>
+        </ion-thumbnail>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-toolbar>
+    <ion-label class="title">WHAT TO KNOW</ion-label>
+  </ion-toolbar>
+
+  <ion-card style="color: #fff">
+    <ion-card-header>
+      <ion-card-subtitle class="review">Critics Consensus</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+      <ion-note color="secondary" (click)="setOpenCritics(true)">
+        Read critic reviews</ion-note
+      >
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-card-subtitle class="review">Audience Says</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+      <ion-note color="secondary" (click)="setOpenAudience(true)"
+        >Read audience reviews</ion-note
+      >
+    </ion-card-content>
+  </ion-card>
+
+  <ion-toolbar>
+    <ion-label class="title">Trailers and videos</ion-label>
+  </ion-toolbar>
+
+  <ion-segment [scrollable]="true" value="disabled">
+    <ion-segment-button
+      style="margin-top: 10pxs"
+      *ngFor="let video of movieDetails.trailers; let i=index"
+      class="S_cart"
+    >
+      <div class="iframe-container">
+        <iframe
+          width="100%"
+          height="100%"
+          [src]="getVideoUrl2(video)"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <ion-label>
+        <p class="S_page">________________________________________________</p>
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- <ion-toolbar>
+    <ion-label class="title">XXXXXXXXXXX PHOTOS</ion-label>
+  </ion-toolbar>
+  <ion-segment [scrollable]="true" value="disabled">
+    <ion-segment-button
+      style="margin-top: 10pxs"
+      *ngFor="let item of items; let index"
+      class="S_cart"
+    >
+      <ion-img
+        class="S_frontpage"
+        src="https://blog.stcloudstate.edu/japanesefilms/files/2021/04/redline-1200-1200-675-675-crop-000000.jpg"
+        alt="avatar"
+      ></ion-img>
+
+      <ion-label>
+        <p class="S_page">________________________________________________</p>
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <ion-toolbar>
+    <ion-label class="title">RATE & PREVIEW</ion-label>
+  </ion-toolbar>
+
+  <ion-card (click)="setOpenRating(true)" id="open-toast">
+    <ion-toast
+      trigger="open-toast"
+      message="log in to review."
+      [duration]="5000"
+    ></ion-toast>
+    <ion-card-content>
+      <ul
+        class="list-inline rating-list2"
+        *ngFor="let star of stars; let i=index"
+      >
+        <li
+          (click)="countStar(star)"
+          [ngClass]="{'selected': (star <= selectedValue)}"
+          (mouseover)="addClass(star)"
+          (mouseout)="removeClass()"
+        >
+          <span class="material-icons"><ion-icon name="star"></ion-icon></span>
+        </li>
+      </ul>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-modal [isOpen]="isModalCritics">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>critic reviews</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenCritics(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-card>
+        <ion-toolbar>
+          <ion-row class="ion-align-items-end">
+            <ion-col size="auto">
+              <ion-avatar>
+                <img
+                  alt="Silhouette of a person's head"
+                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                />
+              </ion-avatar>
+            </ion-col>
+            <ion-col>
+              XXXXXXXXXXXXXXX <ion-icon class="verified" name="star"></ion-icon
+              ><br />
+              XXXXXXXXXXX<br />
+            </ion-col>
+          </ion-row>
+        </ion-toolbar>
+
+        <ion-card-content>
+          Here's a small text description for the card content. Nothing more,
+          nothing less.
+        </ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>Original Score: 5/5</ion-col>
+            <ion-col>Dec 4, 2023</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalAudience">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Read audience reviews</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenAudience(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-card>
+        <ion-toolbar>
+          <ion-row class="ion-align-items-end">
+            <ion-col size="auto">
+              <ion-avatar>
+                <img
+                  alt="Silhouette of a person's head"
+                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                />
+              </ion-avatar>
+            </ion-col>
+            <ion-col> XXXXXXXXXXXXXXX<br /> </ion-col>
+          </ion-row>
+        </ion-toolbar>
+
+        <ion-card-content>
+          Here's a small text description for the card content. Nothing more,
+          nothing less.
+        </ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>Original Score: 5/5</ion-col>
+            <ion-col>Dec 4, 2023</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalRating">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-avatar class="miniAvatar">
+          <ion-img src="../../../../assets/img/serve.png"></ion-img>
+        </ion-avatar>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenRating(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ul
+        class="list-inline rating-list3"
+        *ngFor="let star of stars; let i=index"
+      >
+        <li
+          (click)="countStar(star)"
+          [ngClass]="{'selected': (star <= selectedValue)}"
+          (mouseover)="addClass(star)"
+          (mouseout)="removeClass()"
+        >
+          <span class="material-icons"><ion-icon name="star"></ion-icon></span>
+        </li>
+      </ul>
+
+      <p>What did you think of the movie?(optional)</p>
+      <ion-textarea
+        placeholder="Your revie help others find great movies and shows to watch."
+        [autoGrow]="true"
+      ></ion-textarea>
+      <ion-button shape="round">submit</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>

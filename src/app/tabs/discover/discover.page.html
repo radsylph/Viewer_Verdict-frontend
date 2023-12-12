@@ -1,0 +1,112 @@
+<ion-header collapse="fade">
+  <ion-toolbar>
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col class="header">
+          <ion-avatar class="miniAvatar">
+            <ion-img src="../../../../assets/img/serve.png"></ion-img>
+          </ion-avatar>
+        </ion-col>
+        <ion-col class="header">
+          <img
+            class="centerheader"
+            src="../../assets/img/logo_VV_blanco_mini.png"
+        /></ion-col>
+        <ion-col class="header"> </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="viewer_background">
+  <ion-refresher
+    slot="fixed"
+    [pullFactor]="0.5"
+    [pullMin]="100"
+    [pullMax]="200"
+    (ionRefresh)="handleRefresh($event)"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar>
+    <ion-label class="title">POPULAR SERIES</ion-label>
+  </ion-toolbar>
+
+  <ion-segment [scrollable]="true" value="disabled">
+    <ion-segment-button
+      *ngFor="let serie of series; let index"
+      class="S_cart"
+      (click)="goToSerieDetails(serie.idApi)"
+    >
+      <ion-img class="S_frontpage" [src]="serie.poster" alt="avatar"></ion-img>
+      <!-- <ion-chip class="S_chip">Default</ion-chip> -->
+      <ion-label>
+        <!-- <ion-button size="small">
+          <ion-icon color="warning" slot="start" name="star"></ion-icon>
+          5
+        </ion-button> -->
+        <p class="S_page" [innerHTML]="serie.name"></p>
+      </ion-label>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-toolbar>
+    <ion-label class="title">POPULAR MOVIES</ion-label>
+  </ion-toolbar>
+  <ion-segment [scrollable]="true">
+    <ion-segment-button
+      *ngFor="let movie of movies; let index"
+      class="S_cart ion-activatable ripple-parent"
+      (click)="goToMovieDetails(movie.idApi)"
+    >
+      <ion-img class="S_frontpage" [src]="movie.poster" alt="avatar"></ion-img>
+      <!-- <ion-chip class="S_chip">Default</ion-chip> -->
+      <ion-label>
+        <!-- <ion-button size="small">
+          <ion-icon color="warning" slot="start" name="star"></ion-icon>
+          5
+        </ion-button> -->
+        <p class="S_page" [innerHTML]="movie.title"></p>
+      </ion-label>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-list>
+    <ion-grid [fixed]="true">
+      <ion-row lines="none">
+        <ion-toolbar>
+          <ion-label class="title">NEW & UPDATES</ion-label>
+        </ion-toolbar>
+        <ion-col size="auto" class="P_cart ion-activatable ripple-parent">
+          <ion-card
+            *ngFor="let media of medias let index"
+            class="ion-activatable ripple-parent"
+            
+          >
+            <img alt="media image" [src]="media.poster" />
+            <ion-grid>
+              <ion-row>
+                <ion-col size="auto"
+                  ><ion-chip [innerHTML]="media.type"></ion-chip
+                ></ion-col>
+                <ion-col
+                  size="auto"
+                  class="ion-text-right"
+                  style="display: flex; align-items: center"
+                  [innerHTML]="media.title || media.name"
+                ></ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-card-content [innerHTML]="media.overview"> </ion-card-content>
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

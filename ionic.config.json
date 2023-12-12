@@ -1,0 +1,7 @@
+{
+  "name": "vev",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
