@@ -1,13 +1,46 @@
-<ion-header [translucent]="true">
+<ion-header collapse="fade">
   <ion-toolbar>
-    <ion-title>community</ion-title>
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col class="header">
+          <ion-avatar
+            class="miniAvatar"
+          >
+            <ion-img src="../../../../assets/img/serve.png"></ion-img>
+          </ion-avatar>
+        </ion-col>
+        <ion-col class="header">
+          <img class="centerheader" src="../../assets/img/logo_VV_blanco_mini.png"
+        /></ion-col>
+        <ion-col class="header"> </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-segment value="PEOPLE">
+      <ion-segment-button value="PEOPLE" >
+        <ion-label>PEOPLE</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="GROUPS" >
+        <ion-label>GROUPS</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">community</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item routerLink="/tabs/chat" *ngFor="let item of items; let index"  routerDirection="forward">
+          <ion-avatar slot="start" class="avatar">
+            <img  alt="Silhouette of mountains" src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg" />
+          </ion-avatar>
+          <ion-label>Item</ion-label>
+          <ion-badge slot="end">11</ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,13 +1,123 @@
-<ion-header [translucent]="true">
+<ion-header collapse="fade">
   <ion-toolbar>
-    <ion-title>catalogue</ion-title>
+    <ion-grid [fixed]="true">
+      <ion-row>   
+          <ion-searchbar></ion-searchbar>
+      </ion-row>
+
+      
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">catalogue</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-select
+      label="gender"
+      [compareWith]="compareWith"
+      placeholder="All"
+      (ionChange)="handleChange($event)"
+      [multiple]="true"
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-select
+      label="Year"
+      [compareWith]="compareWith"
+      placeholder="Select year"
+      (ionChange)="handleChange($event)"
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-select
+      label="month"
+      [compareWith]="compareWith"
+      placeholder="Select month"
+      (ionChange)="handleChange($event)" 
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-select
+      label="Type"
+      [compareWith]="compareWith"
+      placeholder="Select Type"
+      (ionChange)="handleChange($event)"
+      [multiple]="true"
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-select
+      label="State"
+      [compareWith]="compareWith"
+      placeholder="Select State"
+      (ionChange)="handleChange($event)"
+      
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-select
+      label="order"
+      [compareWith]="compareWith"
+      placeholder="Select order"
+      (ionChange)="handleChange($event)"
+      
+    >
+      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
+    </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-button fill="solid">
+      Filter
+      <ion-icon slot="end" name="filter"></ion-icon>
+    </ion-button>
+    </ion-col>
+    
+    
+  </ion-row>
+</ion-grid>
+
+  <ion-grid > 
+    <ion-row lines="none"> 
+        <ion-col size="6" *ngFor="let item of items; let index"  class="P_cart ion-activatable ripple-parent" routerLink="/tabs/scream-movies">
+          <img alt="Silhouette of mountains" src="https://m.media-amazon.com/images/M/MV5BNDA1ODI3MTcyNl5BMl5BanBnXkFtZTcwNDkyODYwNw@@._V1_.jpg" />
+          <ion-grid>
+            <ion-row>
+              <ion-col>XXXXXXXXXXXXXXXXXXXXXXXXX</ion-col>
+              <ion-col size="auto"><ion-chip class="type">Default</ion-chip></ion-col>
+              <ion-col size="auto">
+                <ion-button class="score">
+                  <ion-icon color="warning" slot="start" name="star"></ion-icon>5
+                </ion-button>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+
+          <ion-ripple-effect></ion-ripple-effect>
+
+
+            
+        </ion-col>
+        
+    </ion-row>
+   
+
+</ion-grid>
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
 </ion-content>
+
+

@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-item class="header" >
+      <ion-button slot="start" fill="clear">
+        <ion-button class="backbtn" routerLink="/tabs/community" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+        </ion-button>
+      <ion-avatar slot="start" class="avatar">
+        <img  alt="Silhouette of mountains" src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg" />
+      </ion-avatar>
+      <ion-label>Item</ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-content style="height: 100%;">
+  <ion-list class="chat" lines="none" >
+    <ion-item >
+      <ion-card class="user1" slot="start" >
+        <ion-card-content >
+          sadddddddddddddddddddddddddd
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <ion-item >
+      <ion-card class="userlogin" slot="end" >
+        <ion-card-content >
+          1111111111111111111
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <ion-item >
+      <ion-card class="userlogin" slot="end" >
+        <ion-card-content >
+          sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <ion-item >
+      <ion-card class="userlogin" slot="end" >
+        <ion-card-content >
+          ssssssssssssssssssss
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+
+
+</ion-content>
+<ion-footer>
+
+  <ion-toolbar>
+    
+    <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-textarea  [autoGrow]="true" label="send a message" labelPlacement="floating" fill="outline"></ion-textarea>
+    </ion-col>
+      <ion-col size="2">
+          <ion-button ><ion-icon name="send"></ion-icon></ion-button>
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  </ion-toolbar>
+</ion-footer>

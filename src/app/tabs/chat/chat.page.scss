@@ -1,0 +1,29 @@
+.backbtn{
+    background-color: var(--ion-color-viewer_secundary);
+    border-radius: 10px;
+}
+
+ion-avatar.avatar{
+    height: 50px;
+    width: 50px;
+}
+
+
+ion-card.user1{
+    background: var(--ion-color-viewer_background);
+    max-width: 70%;
+    color: var(--ion-color-viewer_primary);
+}
+
+ion-card.userlogin{
+    background: var(--ion-color-viewer_secundary);
+    max-width: 70%;
+    color: var(--ion-color-viewer_primary);
+}
+
+ion-content{
+    color: #fff;
+}
+
+
+  

@@ -30,6 +30,14 @@ const routes: Routes = [
     path: 'scream-series',
     loadChildren: () => import('./scream-series/scream-series.module').then( m => m.ScreamSeriesPageModule)
   },
+  {
+    path: 'watchlist',
+    loadChildren: () => import('./watchlist/watchlist.module').then( m => m.WatchlistPageModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },
 
   
 ];
