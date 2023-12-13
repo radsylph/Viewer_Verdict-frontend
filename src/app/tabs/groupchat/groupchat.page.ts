@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { InfiniteScrollCustomEvent } from '@ionic/angular'
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  selector: 'app-groupchat',
+  templateUrl: './groupchat.page.html',
+  styleUrls: ['./groupchat.page.scss'],
 })
-export class ChatPage implements OnInit {
+export class GroupchatPage implements OnInit {
   items:any = [];
 
   ngOnInit() {
@@ -19,7 +19,6 @@ export class ChatPage implements OnInit {
       this.items.push(`Item ${count + i}`);
     }
   }
-
   onIonInfinite(ev:Event) {
     this.generateItems();
     setTimeout(() => {

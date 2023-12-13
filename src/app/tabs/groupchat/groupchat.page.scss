@@ -1,18 +1,24 @@
+
+
 .backbtn{
     background-color: var(--ion-color-viewer_secundary);
     border-radius: 10px;
 }
 
-ion-avatar.avatar{
-    height: 50px;
-    width: 50px;
-}
+ion-avatar.miniAvatar{
+    max-width: 30px !important;  //any size
+    max-height: 30px !important;
+    }
 
 
 ion-card.user1{
     background: var(--ion-color-viewer_background);
     max-width: 70%;
     color: var(--ion-color-viewer_primary);
+}
+
+ion-label.username{
+    font-size: 50px;
 }
 
 ion-card.userlogin{

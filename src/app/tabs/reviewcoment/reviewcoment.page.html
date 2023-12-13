@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-button slot="start" fill="clear">
+      <ion-button class="backbtn" routerLink="/tabs/discover" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+      </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-backdrop [visible]="true"></ion-backdrop>
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+    <ion-toolbar>
+    <ion-row class="ion-align-items-end">
+      <ion-col size="auto">
+          <ion-avatar >
+              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar> 
+      </ion-col>
+      <ion-col>
+        XXXXXXXXXXXXXXX <ion-icon class="verified" name="star"></ion-icon><br />
+        XXXXXXXXXXX<br />
+      </ion-col>
+    </ion-row>
+        <ion-card-content>
+              Here's a small text description for the card content. Nothing more, nothing less.
+            </ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col ><ion-icon name="heart-outline"></ion-icon>XX</ion-col>
+                <ion-col ><ion-icon name="heart-dislike-outline"></ion-icon>XX</ion-col>
+                <ion-col ><ion-icon name="chatbox"></ion-icon>XX</ion-col>
+                <ion-col size="auto">Score: 5/5</ion-col>
+                <ion-col size="auto">Dec 4, 2023</ion-col>
+              </ion-row>
+            </ion-grid>
+    </ion-toolbar>
+
+    <ion-card>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-end">
+        <ion-col size="auto">
+            <ion-avatar >
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ion-avatar> 
+        </ion-col>
+        <ion-col>
+          XXXXXXXXXXXXXXX <ion-icon class="verified" name="star"></ion-icon><br />
+          XXXXXXXXXXX<br />
+        </ion-col>
+      </ion-row>
+          <ion-card-content>
+                Here's a small text description for the card content. Nothing more, nothing less.
+              </ion-card-content>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="auto">Dec 4, 2023</ion-col>
+                </ion-row>
+              </ion-grid>
+              <ion-progress-bar type="indeterminate"></ion-progress-bar>
+      </ion-toolbar>
+    </ion-card>
+    
+</ion-content>
+
+<ion-footer>
+
+  <ion-toolbar>
+    
+    <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-textarea  [autoGrow]="true" label="give your opinion" labelPlacement="floating" fill="outline"></ion-textarea>
+    </ion-col>
+      <ion-col size="2">
+          <ion-button ><ion-icon name="send"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  </ion-toolbar>
+</ion-footer>

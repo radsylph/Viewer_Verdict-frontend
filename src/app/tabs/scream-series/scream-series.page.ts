@@ -42,6 +42,13 @@ export class ScreamSeriesPage implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
+  }
+
   async ionViewWillEnter() {
     this.isloading = false;
     this.serieDetails = {

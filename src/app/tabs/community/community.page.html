@@ -3,39 +3,182 @@
     <ion-grid [fixed]="true">
       <ion-row>
         <ion-col class="header">
-          <ion-avatar
-            class="miniAvatar"
-          >
+          <ion-avatar class="miniAvatar">
             <ion-img src="../../../../assets/img/serve.png"></ion-img>
           </ion-avatar>
         </ion-col>
         <ion-col class="header">
-          <img class="centerheader" src="../../assets/img/logo_VV_blanco_mini.png"
+          <img
+            class="centerheader"
+            src="../../assets/img/logo_VV_blanco_mini.png"
         /></ion-col>
         <ion-col class="header"> </ion-col>
       </ion-row>
     </ion-grid>
 
     <ion-segment value="PEOPLE">
-      <ion-segment-button value="PEOPLE" >
+      <ion-segment-button value="PEOPLE">
         <ion-label>PEOPLE</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="GROUPS" >
+      <ion-segment-button value="GROUPS">
         <ion-label>GROUPS</ion-label>
       </ion-segment-button>
     </ion-segment>
-
+    <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
   </ion-toolbar>
 </ion-header>
 
-
+<!-- <ion-backdrop [visible]="true"></ion-backdrop> -->
 <ion-content>
+  <ion-grid>
+    <ion-row lines="none">
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://media.gq.com.mx/photos/5be9df325c1fcbd1504c3507/16:9/w_2560%2Cc_limit/john_whick_327.jpg"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group Accion</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://www.mundodeportivo.com/alfabeta/hero/2022/01/series-anime-shonen-jump.jpg?width=768&aspect_ratio=16:9&format=nowebp"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group anime</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://www.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2019/01/El%20Resplandor.jpg"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group terror</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://hips.hearstapps.com/hmg-prod/images/bridgerton-portada-1659513927.jpg?crop=0.668xw:1.00xh;0.224xw,0&resize=1200:*"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group romance</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://gentwenty.com/wp-content/uploads/2013/07/Superheroes.jpg.webp"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group superheroes</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="6"
+        class="P_cart ion-activatable ripple-parent"
+        routerLink="/tabs/scream-movies"
+      >
+        <ion-card>
+          <ion-thumbnail
+            style="width: 160px; height: 220px; background-size: cover"
+          >
+            <img
+              alt="Silhouette of mountains"
+              src="https://img.ecartelera.com/noticias/26100/26146-c.jpg"
+            />
+          </ion-thumbnail>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Group drama</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-card>
     <ion-card-content>
       <ion-list>
-        <ion-item routerLink="/tabs/chat" *ngFor="let item of items; let index"  routerDirection="forward">
+        <ion-item
+          routerLink="/tabs/chat"
+          *ngFor="let item of items; let index"
+          routerDirection="forward"
+        >
           <ion-avatar slot="start" class="avatar">
-            <img  alt="Silhouette of mountains" src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg" />
+            <img
+              alt="Silhouette of mountains"
+              src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg"
+            />
           </ion-avatar>
           <ion-label>Item</ion-label>
           <ion-badge slot="end">11</ion-badge>

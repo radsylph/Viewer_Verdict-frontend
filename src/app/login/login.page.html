@@ -1,13 +1,83 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-button slot="start" fill="clear">
+      <ion-button
+        color="funaprimary"
+        class="backbtn button-style"
+        routerLink="/home"
+        routerDirection="back"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="ion-padding container" style="text-align: center">
+    <h1 class="header-style">Login</h1>
+    <div class="form-container">
+      <ion-item>
+        <ion-input
+          color="funaprimary"
+          class="custom input-style"
+          [(ngModel)]="existingUser.user_info"
+          label="Email / Username"
+          labelPlacement="floating"
+          fill="solid"
+          placeholder="Email / Username"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          color="funaprimary"
+          class="custom input-style"
+          type="Password"
+          label="Password"
+          labelPlacement="floating"
+          [(ngModel)]="existingUser.password"
+          fill="solid"
+          placeholder="Password"
+          id="password"
+        ></ion-input>
+        <ion-icon
+          name="eye"
+          slot="end"
+          id="show_password"
+          (click)="showPassword()"
+          class="icon-style"
+        ></ion-icon>
+      </ion-item>
+      <ion-button
+        color="funaprimary"
+        class="Loginbtn button-style"
+        expand="block"
+        (click)="Login()"
+      >
+        Log In
+      </ion-button>
+      <div class="sign-up sign-up-style">
+        Don't have an account?
+        <ion-button
+          color="dark"
+          fill="clear"
+          routerLink="/signup"
+          routerDirection="forward"
+        >
+          Sign up
+        </ion-button>
+      </div>
+      <div class="sign-up sign-up-style">
+        forgot your password?
+        <ion-button
+          color="dark"
+          fill="clear"
+          routerLink="/reset"
+          routerDirection="forward"
+        >
+          Reset it
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

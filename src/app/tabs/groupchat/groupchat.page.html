@@ -4,9 +4,6 @@
       <ion-button slot="start" fill="clear">
         <ion-button class="backbtn" routerLink="/tabs/community" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
         </ion-button>
-      <ion-avatar slot="start" class="avatar">
-        <img  alt="Silhouette of mountains" src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg" />
-      </ion-avatar>
       <ion-label>Item</ion-label>
     </ion-item>
     <ion-progress-bar type="indeterminate"></ion-progress-bar>
@@ -15,13 +12,17 @@
 
 <ion-backdrop [visible]="true"></ion-backdrop>
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
   <ion-content style="height: 100%;">
   <ion-list class="chat" lines="none" >
     <ion-item >
       <ion-card class="user1" slot="start" >
+    
+          <ion-grid>
+            <ion-row>
+              <ion-col size="auto" class="username"><ion-label>(nombre de usuario) puedes cambiar el color si lo crees necesario</ion-label></ion-col>
+            </ion-row>
+          </ion-grid>
+
         <ion-card-content >
           sadddddddddddddddddddddddddd
         </ion-card-content>

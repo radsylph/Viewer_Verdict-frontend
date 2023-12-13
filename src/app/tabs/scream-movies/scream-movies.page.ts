@@ -62,6 +62,13 @@ export class ScreamMoviesPage implements OnInit {
     window.open(url as string, '_blank');
   }
 
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
+  }
+
   async ionViewWillEnter() {
     this.isloading = false;
     this.movieDetails = {
