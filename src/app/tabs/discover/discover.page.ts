@@ -22,8 +22,11 @@ export class DiscoverPage implements OnInit {
   popularMedia: any = [];
   trendingMedia: any = [];
 
+  isloading: boolean = false;
+
   async handleRefresh(event: any) {
     setTimeout(async () => {
+      this.isloading = false;
       // Llamada a la función para actualizar los datos
       this.popularMedia = await this.ms.getPopularMedias();
       this.trendingMedia = await this.ms.getWeeklyMedias();
@@ -39,7 +42,7 @@ export class DiscoverPage implements OnInit {
       this.popularMedia.movies.forEach((movie: any) => {
         this.movies.push(movie);
       });
-
+      this.isloading = true;
       event.target.complete();
     }, 2000);
   }
@@ -56,6 +59,10 @@ export class DiscoverPage implements OnInit {
       this.movies.push(movie);
     });
     this.medias = this.trendingMedia;
+
+    await setTimeout(() => {
+      this.isloading = true;
+    }, 1500);
   }
 
   private generateItems() {
@@ -95,5 +102,18 @@ export class DiscoverPage implements OnInit {
       value: serieId.toString(),
     });
     this.navCtrl.navigateForward('/tabs/scream-series');
+  }
+
+  async goToMediaDetails(id: number, type: string) {
+    const mediaId = id;
+    if (type === 'movie') {
+      await this.goToMovieDetails(mediaId);
+      return;
+    }
+    if (type === 'tv') {
+      await this.goToSerieDetails(mediaId);
+      return;
+    }
+    //this.navCtrl.navigateForward(`/tabs/scream-${type}`);
   }
 }

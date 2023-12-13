@@ -157,3 +157,8 @@ ion-label.title{
   ion-segment{
     background: #1c1c1d;
   }
+
+  ion-backdrop {
+    background: var(--ion-color-viewer_secundary-contrast);
+    opacity: 0.9;
+  }

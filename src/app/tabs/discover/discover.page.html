@@ -15,8 +15,23 @@
         <ion-col class="header"> </ion-col>
       </ion-row>
     </ion-grid>
+    <div *ngIf="!isloading">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+    <div *ngIf="isloading">
+      <ion-progress-bar
+        type="indeterminate"
+        style="display: none"
+      ></ion-progress-bar>
+    </div>
   </ion-toolbar>
 </ion-header>
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
 
 <ion-content color="viewer_background">
   <ion-refresher
@@ -83,7 +98,7 @@
           <ion-card
             *ngFor="let media of medias let index"
             class="ion-activatable ripple-parent"
-            
+            (click)="goToMediaDetails(media.idApi, media.type)"
           >
             <img alt="media image" [src]="media.poster" />
             <ion-grid>
