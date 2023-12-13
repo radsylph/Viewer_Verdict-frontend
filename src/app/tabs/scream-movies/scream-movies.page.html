@@ -112,11 +112,12 @@
       </ion-col>
       <ion-col>
         <ion-thumbnail>
-          <ion-badge>5</ion-badge>
+          <ion-badge [innerHTML]="movieDetails.criticVoteAverage"></ion-badge>
         </ion-thumbnail>
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -143,7 +144,7 @@
       </ion-col>
       <ion-col>
         <ion-thumbnail>
-          <ion-badge>5</ion-badge>
+          <ion-badge [innerHTML]="movieDetails.publicVoteAverage"></ion-badge>
         </ion-thumbnail>
       </ion-col>
     </ion-row>
@@ -238,7 +239,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-card>
+      <ion-card *ngFor="let review of criticReviews">
         <ion-toolbar>
           <ion-row class="ion-align-items-end">
             <ion-col size="auto">
@@ -250,21 +251,33 @@
               </ion-avatar>
             </ion-col>
             <ion-col>
-              XXXXXXXXXXXXXXX <ion-icon class="verified" name="star"></ion-icon
-              ><br />
-              XXXXXXXXXXX<br />
+              <ion-col class="ion-align-self-center"
+                >{{review.owner.username}}</ion-col
+              >
+              <ion-icon class="verified" name="star"></ion-icon><br />
+              <ion-col class="ion-align-self-center">Critic</ion-col>
             </ion-col>
           </ion-row>
         </ion-toolbar>
 
-        <ion-card-content>
-          Here's a small text description for the card content. Nothing more,
-          nothing less.
-        </ion-card-content>
+        <ion-card-content [innerHTML]="review.review"> </ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col>Original Score: 5/5</ion-col>
-            <ion-col>Dec 4, 2023</ion-col>
+            <ion-col [innerHTML]="'Score:' + review.rating"></ion-col>
+            <ion-col *ngIf="review.edited">
+              <small
+                ><em
+                  >Edited at: {{review.updatedAt | date : "short"}}</em
+                ></small
+              >
+            </ion-col>
+            <ion-col>
+              <small
+                ><em
+                  >Created at: {{review.createdAt | date : "short"}}</em
+                ></small
+              >
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card>
@@ -283,9 +296,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-card>
+      <ion-card *ngFor="let review of audienceReviews">
         <ion-toolbar>
-          <ion-row class="ion-align-items-end">
+          <ion-row class="ion-align-items-center">
             <ion-col size="auto">
               <ion-avatar>
                 <img
@@ -294,18 +307,31 @@
                 />
               </ion-avatar>
             </ion-col>
-            <ion-col> XXXXXXXXXXXXXXX<br /> </ion-col>
+            <ion-col class="ion-align-self-center"
+              >{{review.owner.username}}</ion-col
+            >
+            <ion-col class="ion-align-self-center">Audience</ion-col>
           </ion-row>
         </ion-toolbar>
 
-        <ion-card-content>
-          Here's a small text description for the card content. Nothing more,
-          nothing less.
-        </ion-card-content>
+        <ion-card-content [innerHTML]="review.review"> </ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col>Original Score: 5/5</ion-col>
-            <ion-col>Dec 4, 2023</ion-col>
+            <ion-col [innerHTML]="'Score:' + review.rating"></ion-col>
+            <ion-col *ngIf="review.edited">
+              <small
+                ><em
+                  >Edited at: {{review.updatedAt | date : "short"}}</em
+                ></small
+              >
+            </ion-col>
+            <ion-col>
+              <small
+                ><em
+                  >Created at: {{review.createdAt | date : "short"}}</em
+                ></small
+              >
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card>

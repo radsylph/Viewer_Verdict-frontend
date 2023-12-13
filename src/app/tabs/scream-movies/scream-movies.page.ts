@@ -33,12 +33,17 @@ export class ScreamMoviesPage implements OnInit {
     releaseDate: '',
     trailers: [],
     runtime: 0,
-    voteAverage: 0,
-    voteCount: 0,
-    voteTotalPoints: 0,
+    publicVoteAverage: 0,
+    publicVoteCount: 0,
+    publicVoteTotalPoints: 0,
+    criticVoteAverage: 0,
+    criticVoteCount: 0,
+    criticVoteTotalPoints: 0,
     adult: false,
     language: '',
   };
+  public audienceReviews: any = [];
+  public criticReviews: any = [];
 
   public testposter: any = '';
   public hasTrailer: boolean = false;
@@ -68,9 +73,12 @@ export class ScreamMoviesPage implements OnInit {
       releaseDate: '',
       trailers: [],
       runtime: 0,
-      voteAverage: 0,
-      voteCount: 0,
-      voteTotalPoints: 0,
+      publicVoteAverage: 0,
+      publicVoteCount: 0,
+      publicVoteTotalPoints: 0,
+      criticVoteAverage: 0,
+      criticVoteCount: 0,
+      criticVoteTotalPoints: 0,
       adult: false,
       language: '',
     };
@@ -79,9 +87,12 @@ export class ScreamMoviesPage implements OnInit {
     });
     console.log(this.movieId);
     const movieDetailsFromDb = await this.ms.getMovieDetails(this.movieId);
+
     this.movieDetails = movieDetailsFromDb.movie;
-    console.log(this.movieDetails);
-    console.log('hizo init');
+    this.audienceReviews = movieDetailsFromDb.publicReviews;
+    this.criticReviews = movieDetailsFromDb.criticReviews;
+    console.log(this.audienceReviews);
+    console.log(this.criticReviews);
     if (this.movieDetails.trailers.length > 0) {
       this.hasTrailer = true;
     }

@@ -7,9 +7,12 @@ export interface MovieInterface {
   releaseDate: string;
   trailers: string[];
   runtime: number;
-  voteAverage?: number;
-  voteCount?: number;
-  voteTotalPoints?: number;
+  publicVoteAverage?: number;
+  publicVoteCount?: number;
+  publicVoteTotalPoints?: number;
+  criticVoteAverage?: number;
+  criticVoteCount?: number;
+  criticVoteTotalPoints?: number;
   adult: boolean;
   language: string;
   media_type?: string;
