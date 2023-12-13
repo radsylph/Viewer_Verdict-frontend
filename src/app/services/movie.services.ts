@@ -205,8 +205,8 @@ export class MovieService {
       return new Promise((resolve, reject) => {
         this.http.get(`${this.BackenUrl}/media/serie/${id}`).subscribe(
           (data: any) => {
-            const movie: MovieInterface = data;
-            resolve(movie);
+            const serie: SerieInterface = data;
+            resolve(serie);
           },
           (error) => {
             reject(error);
