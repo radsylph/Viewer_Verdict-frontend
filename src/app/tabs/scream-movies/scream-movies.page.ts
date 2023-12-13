@@ -7,6 +7,7 @@ import { MovieInterface } from 'src/app/interfaces/movie.interface';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-scream-movies',
@@ -40,6 +41,8 @@ export class ScreamMoviesPage implements OnInit {
   };
 
   public testposter: any = '';
+  public hasTrailer: boolean = false;
+  public isloading: boolean = false;
 
   items: any = [];
   itemsVideo: any = [];
@@ -55,6 +58,7 @@ export class ScreamMoviesPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    this.isloading = false;
     this.movieDetails = {
       title: '',
       overview: '',
@@ -78,6 +82,12 @@ export class ScreamMoviesPage implements OnInit {
     this.movieDetails = movieDetailsFromDb.movie;
     console.log(this.movieDetails);
     console.log('hizo init');
+    if (this.movieDetails.trailers.length > 0) {
+      this.hasTrailer = true;
+    }
+    await setTimeout(() => {
+      this.isloading = true;
+    }, 2000);
   }
   async gotToDiscover() {
     this.navCtrl.navigateBack('/tabs/discover');

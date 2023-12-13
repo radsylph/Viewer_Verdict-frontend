@@ -8,13 +8,16 @@ import { ScreamSeriesPageRoutingModule } from './scream-series-routing.module';
 
 import { ScreamSeriesPage } from './scream-series.page';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ScreamSeriesPageRoutingModule
+    ScreamSeriesPageRoutingModule,
   ],
-  declarations: [ScreamSeriesPage]
+  declarations: [ScreamSeriesPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ScreamSeriesPageModule {}

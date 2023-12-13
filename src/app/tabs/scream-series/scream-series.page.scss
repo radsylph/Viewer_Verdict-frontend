@@ -144,3 +144,26 @@ ion-card-subtitle.review{
     background-size: cover;
     opacity: 0.5;
   }
+
+  ion-backdrop {
+    background: var(--ion-color-viewer_secundary-contrast);
+    opacity: 0.9;
+  }
+
+
+  swiper-container {
+    width: 100%;
+    height: 50%;
+  }
+   
+  swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  label{
+    font:bold;
+    color:white;
+  }

@@ -6,7 +6,22 @@
       ></ion-button>
     </ion-button>
   </ion-toolbar>
+  <div *ngIf="!isloading">
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </div>
+  <div *ngIf="isloading">
+    <ion-progress-bar
+      type="indeterminate"
+      style="display: none"
+    ></ion-progress-bar>
+  </div>
 </ion-header>
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
 
 <ion-content>
   <ion-card>
@@ -33,17 +48,33 @@
       </ion-card-content>
 
       <ion-card-subtitle
-        ><label style="color: white" for="">type:</label
+        ><label for="">type:</label
         ><ion-chip class="serie_movie" color="secondary"
           >Tv</ion-chip
         ></ion-card-subtitle
       >
       <ion-card-subtitle
-        ><label for="">Release Date :</label
+        ><label for="">First air :</label
         ><ion-chip
           class="serie_movie"
           color="secondary"
           [innerHTML]="serieDetails.firstAir"
+        ></ion-chip
+      ></ion-card-subtitle>
+      <ion-card-subtitle
+        ><label for="">Last air :</label
+        ><ion-chip
+          class="serie_movie"
+          color="secondary"
+          [innerHTML]="serieDetails.lastAir"
+        ></ion-chip
+      ></ion-card-subtitle>
+      <ion-card-subtitle
+        ><label for="">Status :</label
+        ><ion-chip
+          class="serie_movie"
+          color="secondary"
+          [innerHTML]="serieDetails.status"
         ></ion-chip
       ></ion-card-subtitle>
       <ion-card-subtitle
@@ -170,51 +201,28 @@
   </ion-card>
 
   <ion-toolbar>
-    <ion-label class="title">XXXXXXXXXXX VIDEO</ion-label>
+    <ion-label class="title">Trailers & Videos</ion-label>
   </ion-toolbar>
 
-  <ion-segment [scrollable]="true" value="disabled">
-    <ion-segment-button
-      style="margin-top: 10pxs"
-      *ngFor="let video of serieDetails.trailers; let i=index"
-      class="S_cart"
+  <ion-segment [scrollable]="true" value="disabled"> </ion-segment>
+
+  <swiper-container [slidesPerView]="1" [spaceBetween]="10">
+    <swiper-slide
+      swiperSlide
+      *ngFor="let vide of serieDetails.trailers; let i = index"
     >
       <div class="iframe-container">
         <iframe
           width="100%"
           height="100%"
-          [src]="getVideoUrl2(video)"
+          [src]="getVideoUrl2(vide)"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
       </div>
-      <ion-label>
-        <p class="S_page">________________________________________________</p>
-      </ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
-  <!-- <ion-toolbar>
-    <ion-label class="title">XXXXXXXXXXX PHOTOS</ion-label>
-  </ion-toolbar>
-  <ion-segment [scrollable]="true" value="disabled">
-    <ion-segment-button
-      style="margin-top: 10pxs"
-      *ngFor="let item of items; let index"
-      class="S_cart"
-    >
-      <ion-img
-        class="S_frontpage"
-        src="https://blog.stcloudstate.edu/japanesefilms/files/2021/04/redline-1200-1200-675-675-crop-000000.jpg"
-        alt="avatar"
-      ></ion-img>
-
-      <ion-label>
-        <p class="S_page">_______________________________</p>
-      </ion-label>
-    </ion-segment-button>
-  </ion-segment> -->
+    </swiper-slide>
+  </swiper-container>
 
   <ion-toolbar>
     <ion-label class="title">RATE & PREVIEW</ion-label>
@@ -243,166 +251,129 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-toolbar>
-    <ion-label class="title">SEASONS</ion-label>
-  </ion-toolbar>
-
-  <ion-card-content>
-    <ion-list>
-      <ion-card *ngFor="let item of itemsSeasons; let index">
-        <ion-toolbar class="ion-activatable ripple-parent">
-          <ion-thumbnail style="height: auto; width: 90px" slot="start">
-            <img
-              alt="Silhouette of mountains"
-              src="https://upload.wikimedia.org/wikipedia/en/d/de/Oban_promo_poster.jpg"
-            />
-          </ion-thumbnail>
-          <ion-card-header>
-            <ion-card-subtitle style="color: #fff">
-              XXXXXXXXXXXXXXXXXXXXXXXXX
-            </ion-card-subtitle>
-            <ion-card-subtitle
-              ><ion-chip class="gender" color="secondary"
-                >Secondary</ion-chip
-              ></ion-card-subtitle
-            >
-          </ion-card-header>
-          <ion-card-content
-            >Una competición de carreras intergalácticas determina el destino
-            del universo.</ion-card-content
-          >
-
-          <ion-button size="small"
-            ><ion-icon color="warning" slot="start" name="star"></ion-icon>
-            <p style="color: #fff">5</p></ion-button
-          >
-          <ion-ripple-effect></ion-ripple-effect>
-        </ion-toolbar>
-      </ion-card>
-    </ion-list>
-  </ion-card-content>
-</ion-content>
-
-<ion-modal [isOpen]="isModalCritics">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>critic reviews</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="setOpenCritics(false)">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-card>
+  <ion-modal [isOpen]="isModalCritics">
+    <ng-template>
+      <ion-header>
         <ion-toolbar>
-          <ion-row class="ion-align-items-end">
-            <ion-col size="auto">
-              <ion-avatar>
-                <img
-                  alt="Silhouette of a person's head"
-                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
-                />
-              </ion-avatar>
-            </ion-col>
-            <ion-col>
-              XXXXXXXXXXXXXXX <ion-icon class="verified" name="star"></ion-icon
-              ><br />
-              XXXXXXXXXXX<br />
-            </ion-col>
-          </ion-row>
+          <ion-title>critic reviews</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenCritics(false)">Close</ion-button>
+          </ion-buttons>
         </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-card>
+          <ion-toolbar>
+            <ion-row class="ion-align-items-end">
+              <ion-col size="auto">
+                <ion-avatar>
+                  <img
+                    alt="Silhouette of a person's head"
+                    src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                  />
+                </ion-avatar>
+              </ion-col>
+              <ion-col>
+                XXXXXXXXXXXXXXX
+                <ion-icon class="verified" name="star"></ion-icon><br />
+                XXXXXXXXXXX<br />
+              </ion-col>
+            </ion-row>
+          </ion-toolbar>
 
-        <ion-card-content>
-          Here's a small text description for the card content. Nothing more,
-          nothing less.
-        </ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col>Original Score: 5/5</ion-col>
-            <ion-col>Dec 4, 2023</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+          <ion-card-content>
+            Here's a small text description for the card content. Nothing more,
+            nothing less.
+          </ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Original Score: 5/5</ion-col>
+              <ion-col>Dec 4, 2023</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
-<ion-modal [isOpen]="isModalAudience">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Read audience reviews</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="setOpenAudience(false)">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-card>
+  <ion-modal [isOpen]="isModalAudience">
+    <ng-template>
+      <ion-header>
         <ion-toolbar>
-          <ion-row class="ion-align-items-end">
-            <ion-col size="auto">
-              <ion-avatar>
-                <img
-                  alt="Silhouette of a person's head"
-                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
-                />
-              </ion-avatar>
-            </ion-col>
-            <ion-col> XXXXXXXXXXXXXXX<br /> </ion-col>
-          </ion-row>
+          <ion-title>Read audience reviews</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenAudience(false)">Close</ion-button>
+          </ion-buttons>
         </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-card>
+          <ion-toolbar>
+            <ion-row class="ion-align-items-end">
+              <ion-col size="auto">
+                <ion-avatar>
+                  <img
+                    alt="Silhouette of a person's head"
+                    src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                  />
+                </ion-avatar>
+              </ion-col>
+              <ion-col> XXXXXXXXXXXXXXX<br /> </ion-col>
+            </ion-row>
+          </ion-toolbar>
 
-        <ion-card-content>
-          Here's a small text description for the card content. Nothing more,
-          nothing less.
-        </ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col>Original Score: 5/5</ion-col>
-            <ion-col>Dec 4, 2023</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+          <ion-card-content>
+            Here's a small text description for the card content. Nothing more,
+            nothing less.
+          </ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Original Score: 5/5</ion-col>
+              <ion-col>Dec 4, 2023</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
-<ion-modal [isOpen]="isModalRating">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-avatar class="miniAvatar">
-          <ion-img src="../../../../assets/img/serve.png"></ion-img>
-        </ion-avatar>
+  <ion-modal [isOpen]="isModalRating">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-avatar class="miniAvatar">
+            <ion-img src="../../../../assets/img/serve.png"></ion-img>
+          </ion-avatar>
 
-        <ion-buttons slot="end">
-          <ion-button (click)="setOpenRating(false)">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ul
-        class="list-inline rating-list3"
-        *ngFor="let star of stars; let i=index"
-      >
-        <li
-          (click)="countStar(star)"
-          [ngClass]="{'selected': (star <= selectedValue)}"
-          (mouseover)="addClass(star)"
-          (mouseout)="removeClass()"
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenRating(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ul
+          class="list-inline rating-list3"
+          *ngFor="let star of stars; let i=index"
         >
-          <span class="material-icons"><ion-icon name="star"></ion-icon></span>
-        </li>
-      </ul>
+          <li
+            (click)="countStar(star)"
+            [ngClass]="{'selected': (star <= selectedValue)}"
+            (mouseover)="addClass(star)"
+            (mouseout)="removeClass()"
+          >
+            <span class="material-icons"
+              ><ion-icon name="star"></ion-icon
+            ></span>
+          </li>
+        </ul>
 
-      <p>What did you think of the movie?(optional)</p>
-      <ion-textarea
-        placeholder="Your revie help others find great movies and shows to watch."
-        [autoGrow]="true"
-      ></ion-textarea>
-      <ion-button shape="round">submit</ion-button>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+        <p>What did you think of the serie?(optional)</p>
+        <ion-textarea
+          placeholder="Your revie help others find great movies and shows to watch."
+          [autoGrow]="true"
+        ></ion-textarea>
+        <ion-button shape="round">submit</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

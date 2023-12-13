@@ -18,6 +18,7 @@ export class ScreamSeriesPage implements OnInit {
   itemsVideo: any = [];
   itemsSeasons: any = [];
   public serieId: any = '';
+  public isloading: boolean = false;
   public serieDetails: any = {
     idApi: 0,
     name: '',
@@ -42,6 +43,7 @@ export class ScreamSeriesPage implements OnInit {
   ) {}
 
   async ionViewWillEnter() {
+    this.isloading = false;
     this.serieDetails = {
       idApi: 0,
       name: '',
@@ -67,6 +69,9 @@ export class ScreamSeriesPage implements OnInit {
     this.serieDetails = serieFromDb.serie;
     console.log(this.serieDetails);
     console.log('test');
+    await setTimeout(() => {
+      this.isloading = true;
+    }, 2000);
   }
 
   async gotToDiscover() {
