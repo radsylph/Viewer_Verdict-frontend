@@ -230,13 +230,26 @@
               <ion-icon class="verified" name="star"></ion-icon><br />
               <ion-col class="ion-align-self-center">Critic</ion-col>
             </ion-col>
+            <ion-col class="ion-align-items-start">
+              <div *ngIf="userId === review.owner._id">
+                <ion-button fill="clear" (click)="editReview(review._id)">
+                  <ion-icon
+                    class="OptTwits"
+                    name="ellipsis-vertical"
+                  ></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
           </ion-row>
         </ion-toolbar>
 
-        <ion-card-content [innerHTML]="review.review"> </ion-card-content>
+        <ion-card-content
+          [innerHTML]="review.review"
+          (click)="setOpenResponse(true)"
+        >
+        </ion-card-content>
         <ion-grid>
           <ion-row>
-            <!-- <ion-col [innerHTML]="'Score: ' + review.rating">{{}}</ion-col> -->
             <ion-col>{{"Score: " + review.rating + "/5"}}</ion-col>
 
             <ion-col *ngIf="review.edited">
@@ -287,6 +300,13 @@
             >
           </ion-row>
         </ion-toolbar>
+        <ion-col>
+          <div *ngIf="userId === review.owner._id">
+            <ion-button fill="clear">
+              <ion-icon class="OptTwits" name="ellipsis-vertical"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
 
         <ion-card-content [innerHTML]="review.review"> </ion-card-content>
         <ion-grid>
@@ -344,6 +364,64 @@
         [(ngModel)]="review.review"
       ></ion-textarea>
       <ion-button shape="round" (click)="createReview()">submit</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalResponse">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-avatar class="miniAvatar">
+          <ion-img src="../../../../assets/img/serve.png"></ion-img>
+        </ion-avatar>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenResponse(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-textarea
+        placeholder="Write here the response to the review."
+        [autoGrow]="true"
+        [(ngModel)]="review.review"
+      ></ion-textarea>
+      <ion-button shape="round" (click)="createReview()">submit</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalEdit">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-avatar class="miniAvatar">
+          <ion-img src="../../../../assets/img/serve.png"></ion-img>
+        </ion-avatar>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenRating(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <div class="star-icons">
+        <ion-icon
+          name="star"
+          *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+          (click)="countStar(i + 1)"
+          (mouseover)="addClass(i + 1)"
+          [color]="i < selectedValue ? 'primary' : 'medium'"
+        ></ion-icon>
+      </div>
+
+      <p>What did you think of the movie?(optional)</p>
+      <ion-textarea
+        [autoGrow]="true"
+        [(ngModel)]="review.review"
+      ></ion-textarea>
+      <ion-button shape="round" (click)="editReview2()">Edit</ion-button>
     </ion-content>
   </ng-template>
 </ion-modal>
