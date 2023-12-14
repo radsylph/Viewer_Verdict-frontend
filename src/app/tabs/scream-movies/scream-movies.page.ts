@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
 import { MovieService } from '../../services/movie.services';
 import { Preferences } from '@capacitor/preferences';
-import { MovieInterface } from 'src/app/interfaces/movie.interface';
+import { ReviewInterface, MovieInterface } from 'src/app/interfaces/main';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { ReviewInterface } from 'src/app/interfaces/main';
+import { AlertController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-scream-movies',
@@ -22,7 +23,9 @@ export class ScreamMoviesPage implements OnInit {
     private ms: MovieService,
     private sanitizer: DomSanitizer,
     public modalController: ModalController,
-    private message: ToastController
+    private message: ToastController,
+    private alert: AlertController,
+    private actionSheetCtrl: ActionSheetController
   ) {}
   private movieId: any = '';
   public trailers: String[] = [];
@@ -57,6 +60,7 @@ export class ScreamMoviesPage implements OnInit {
   public audienceReviews: any = [];
   public criticReviews: any = [];
   public hasSession: boolean = false;
+  public userId: any = '';
 
   public isloading: boolean = false;
 
@@ -94,7 +98,9 @@ export class ScreamMoviesPage implements OnInit {
 
   async getToken() {
     const token = await Preferences.get({ key: 'token' });
+    const userId = await Preferences.get({ key: 'userId' });
     if (token.value) {
+      this.userId = userId.value;
       return (this.hasSession = true);
     } else {
       return (this.hasSession = false);
@@ -126,18 +132,16 @@ export class ScreamMoviesPage implements OnInit {
       this.movieId = data.value;
     });
     await this.getToken();
-    console.log(this.movieId);
     const movieDetailsFromDb = await this.ms.getMovieDetails(this.movieId);
 
     this.movieDetails = movieDetailsFromDb.movie;
     this.audienceReviews = movieDetailsFromDb.publicReviews;
     this.criticReviews = movieDetailsFromDb.criticReviews;
-    console.log(this.audienceReviews);
-    console.log(this.criticReviews);
     await setTimeout(() => {
       this.isloading = true;
     }, 2000);
   }
+
   async gotToDiscover() {
     this.navCtrl.navigateBack('/tabs/discover');
   }
@@ -148,6 +152,8 @@ export class ScreamMoviesPage implements OnInit {
   isModalRating = false;
   isModalAudience = false;
   isModalCritics = false;
+  isModalResponse = false;
+  isModalEdit = false;
 
   setOpenAudience(isOpen: boolean) {
     this.isModalAudience = isOpen;
@@ -167,13 +173,98 @@ export class ScreamMoviesPage implements OnInit {
     }
   }
 
+  setOpenResponse(isOpen: boolean) {
+    this.isModalResponse = isOpen;
+  }
+
+  setOpenEdit(isOpen: boolean) {
+    this.isModalEdit = isOpen;
+  }
+
   async createReview() {
     this.review.mediaId = this.movieId;
     console.log(this.review);
-    await this.ms.reviewMovie(this.review, this.movieId);
+    if (this.review.review == '' || this.review.rating === 0) {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      await this.ms.reviewMovie(this.review, this.movieId);
+      this.createMessage('Review created successfully');
+      this.ionViewWillEnter();
+      this.setOpenRating(false);
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
   }
 
-  //counting stars
+  async createResponse() {}
+
+  async editReview(id: any) {
+    const antionSheet = await this.actionSheetCtrl
+      .create({
+        header: 'Edit Review',
+        buttons: [
+          {
+            text: 'Edit',
+            icon: 'create-outline',
+            handler: () => {
+              this.setOpenEdit(true);
+            },
+          },
+          {
+            text: 'Cancel',
+            icon: 'close',
+            role: 'cancel',
+          },
+        ],
+      })
+      .then((actionSheet) => actionSheet.present());
+  }
+
+  async editReview2() {
+    this.review.mediaId = this.movieId;
+    console.log(this.review);
+    if (this.review.review == '' || this.review.rating === 0) {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      await this.ms.editMovieReview(this.review, this.movieId);
+      this.createMessage('Review edited successfully');
+      this.ionViewWillEnter();
+      this.setOpenEdit(false);
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
   countStar(star: number) {
     this.isMouseover = false;
     this.selectedValue = star;
@@ -181,8 +272,6 @@ export class ScreamMoviesPage implements OnInit {
     console.log(this.data);
     this.review.rating = this.data;
   }
-
-  //for adding star
 
   addClass(star: number) {
     if (this.isMouseover) {
