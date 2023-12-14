@@ -22,10 +22,19 @@ export class LoginPage implements OnInit {
     private ss: SessionService
   ) {}
 
-  async setToken(token: string) {
+  existingUser: existingUser = {
+    user_info: '',
+    password: '',
+  };
+
+  async setToken(token: string, userId: string) {
     await Preferences.set({
       key: 'token',
       value: token,
+    });
+    await Preferences.set({
+      key: 'userId',
+      value: userId,
     });
     return this.navCtrl.navigateForward('/tabs/discover');
   }
@@ -43,7 +52,7 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getToken();
+    // this.getToken();
     this.existingUser = {
       user_info: '',
       password: '',
@@ -61,11 +70,6 @@ export class LoginPage implements OnInit {
       button.name = 'eye';
     }
   }
-
-  existingUser: existingUser = {
-    user_info: '',
-    password: '',
-  };
 
   async Login() {
     if (this.existingUser.user_info == '' || this.existingUser.password == '') {
@@ -88,9 +92,11 @@ export class LoginPage implements OnInit {
             buttons: ['OK'],
           })
           .then((alert) => alert.present());
+        console.log(res);
         const userToken = res.token;
+        const userId = res.id;
         console.log(res.token);
-        this.setToken(userToken);
+        this.setToken(userToken, userId);
       },
       async (error) => {
         const errorsMessages = error.error.errors;
