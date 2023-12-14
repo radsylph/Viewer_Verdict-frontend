@@ -61,17 +61,6 @@
         ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-textarea
-          color="funaprimary"
-          class="custom"
-          [(ngModel)]="newUser.bio"
-          fill="solid"
-          label="Biography"
-          labelPlacement="floating"
-          placeholder="Email"
-        ></ion-textarea>
-      </ion-item>
-      <ion-item>
         <ion-input
           color="funaprimary"
           class="registerbtn"
@@ -121,25 +110,7 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-      <ion-item>
-        <ion-label position="floating" style="align-self: center"
-          >Upload a user profile picture</ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-grid>
-          <ion-row justify-content-center>
-            <ion-col size="auto">
-              <div style="border-radius: 50%">
-                <ion-img
-                  [src]="newUser.profilePicture"
-                  *ngIf="newUser.profilePicture"
-                ></ion-img>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
+
       <ion-button class="registerbtn" expand="block" (click)="signup()"
         >Sign up</ion-button
       >

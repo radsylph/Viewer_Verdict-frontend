@@ -3,13 +3,11 @@ import { Router } from '@angular/router';
 import { newUser, ErrorInterface } from '../interfaces/main';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { SessionService } from '../services/session.services';
 
 import { NavController } from '@ionic/angular';
 import { RecaptchaErrorParameters } from 'ng-recaptcha';
 import { RecaptchaComponent } from 'ng-recaptcha';
-import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +18,8 @@ export class SignupPage implements OnInit {
   constructor(
     private http: HttpClient,
     private alert: AlertController,
-    private navigation: NavController
+    private navCtrl: NavController,
+    private ss: SessionService
   ) {}
 
   image: any;
@@ -87,53 +86,6 @@ export class SignupPage implements OnInit {
     }
   }
 
-  // async takePicture() {
-  //   try {
-  //     if (Capacitor.getPlatform() != 'web') await Camera.requestPermissions();
-  //     const image = await Camera.getPhoto({
-  //       quality: 90,
-  //       allowEditing: true,
-  //       resultType: CameraResultType.DataUrl,
-  //       source: CameraSource.Prompt,
-  //       width: 500,
-  //     });
-  //     console.log(image);
-  //     this.newUser.profilePicture = image.dataUrl;
-  //     this.test = image;
-  //     console.log(this.newUser.profilePicture);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // async uploadPicture(blob: any, imageData: any) {
-  //   console.log('la wea loca' + imageData);
-  //   try {
-  //     const currentDate = Date.now();
-  //     const filePath = `profilePictures/${currentDate}.${imageData.format}`;
-  //     const fileRef = ref(this.storage, filePath);
-  //     const task = await uploadBytes(fileRef, blob);
-  //     console.log('task: ', task);
-  //     const url = getDownloadURL(fileRef);
-  //     return url;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // dataURLtoBlob(dataurl: string) {
-  //   let arr = dataurl.split(','),
-  //     match = arr[0].match(/:(.*?);/),
-  //     mime = match ? match[1] : '',
-  //     bstr = atob(arr[1]),
-  //     n = bstr.length,
-  //     u8arr = new Uint8Array(n);
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n);
-  //   }
-  //   return new Blob([u8arr], { type: mime });
-  // }
-
   async signup() {
     if (
       this.newUser.name == '' ||
@@ -185,45 +137,11 @@ export class SignupPage implements OnInit {
         .then((alert) => alert.present());
       return;
     }
-    if (
-      this.newUser.profilePicture !== '' &&
-      this.newUser.profilePicture !== undefined
-    ) {
-      // const blob = this.dataURLtoBlob(this.newUser.profilePicture as string);
-      // if (blob) {
-      //   const url = await this.uploadPicture(blob, this.test);
-      //   this.newUser.profilePicture = url;
-      // }
-    }
+
     console.log(this.newUser);
 
-    await this.http
-      .post(
-        'https://funaticsbackend-production.up.railway.app/auth/create',
-        this.newUser
-      )
-      .pipe(
-        catchError((error) => {
-          const errorsMessages = error.error.errors;
-          const newErrors: Array<String> = [];
-          console.log(errorsMessages);
-          errorsMessages.forEach((element: ErrorInterface) => {
-            newErrors.push(element.msg);
-          });
-          console.log(newErrors);
-          this.alert
-            .create({
-              header: 'you have the following errors',
-              message: newErrors.join(', '),
-              buttons: ['OK'],
-            })
-            .then((alert) => {
-              alert.present();
-            });
-          return throwError(error);
-        })
-      )
-      .subscribe((response) => {
+    await this.ss.createUser(this.newUser).subscribe(
+      (response: any) => {
         console.log(response);
         this.alert
           .create({
@@ -232,8 +150,76 @@ export class SignupPage implements OnInit {
             buttons: ['OK'],
           })
           .then((alert) => alert.present());
-        console.log(response);
-        this.navigation.navigateForward('/login');
-      });
+        this.navCtrl.navigateForward('/login');
+        this.newUser = {
+          name: '',
+          lastname: '',
+          username: '',
+          email: '',
+          password: '',
+          repeat_password: '',
+          captchaResponse: undefined,
+          profilePicture: 'image.png',
+        };
+      },
+      (error: any) => {
+        console.log(error);
+        const errorsMessages = error.error.errors;
+        const newErrors: Array<String> = [];
+        console.log(errorsMessages);
+        errorsMessages.forEach((element: ErrorInterface) => {
+          newErrors.push(element.msg);
+        });
+        console.log(newErrors);
+        this.alert
+          .create({
+            header: 'you have the following errors',
+            message: newErrors.join(', '),
+            buttons: ['OK'],
+          })
+          .then((alert) => {
+            alert.present();
+          });
+      }
+    );
+
+    // await this.http
+    //   .post(
+    //     'https://funaticsbackend-production.up.railway.app/auth/create',
+    //     this.newUser
+    //   )
+    //   .pipe(
+    //     catchError((error) => {
+    //       const errorsMessages = error.error.errors;
+    //       const newErrors: Array<String> = [];
+    //       console.log(errorsMessages);
+    //       errorsMessages.forEach((element: ErrorInterface) => {
+    //         newErrors.push(element.msg);
+    //       });
+    //       console.log(newErrors);
+    //       this.alert
+    //         .create({
+    //           header: 'you have the following errors',
+    //           message: newErrors.join(', '),
+    //           buttons: ['OK'],
+    //         })
+    //         .then((alert) => {
+    //           alert.present();
+    //         });
+    //       return throwError(error);
+    //     })
+    //   )
+    //   .subscribe((response) => {
+    //     console.log(response);
+    //     this.alert
+    //       .create({
+    //         header: 'Success',
+    //         message: 'User created successfully',
+    //         buttons: ['OK'],
+    //       })
+    //       .then((alert) => alert.present());
+    //     console.log(response);
+    //     this.navigation.navigateForward('/login');
+    //   });
   }
 }
