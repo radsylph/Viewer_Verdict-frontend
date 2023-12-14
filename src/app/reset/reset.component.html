@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear">
+      <ion-button
+        color="funaprimary"
+        class="backbtn button-style"
+        routerLink="/login"
+        routerDirection="back"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding container" style="text-align: center">
+    <h1 class="header-style">Reset your password</h1>
+    <div class="form-container">
+      <ion-item>
+        <ion-input
+          color="funaprimary"
+          class="custom input-style"
+          [(ngModel)]="user"
+          label="Email"
+          labelPlacement="floating"
+          fill="solid"
+          placeholder="Email"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button
+        color="funaprimary"
+        class="reset-btn button-style"
+        expand="block"
+        (click)="resetPassword()"
+      >
+        Reset Password
+      </ion-button>
+
+      <div class="sign-up sign-up-style">
+        Remember your password?
+        <ion-button
+          color="dark"
+          fill="clear"
+          routerLink="/login"
+          routerDirection="forward"
+        >
+          Log in
+        </ion-button>
+      </div>
+
+      <div class="sign-up sign-up-style">
+        Don't have an account ?
+        <ion-button
+          color="dark"
+          fill="clear"
+          routerLink="/signup"
+          routerDirection="forward"
+        >
+          Sign up
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
