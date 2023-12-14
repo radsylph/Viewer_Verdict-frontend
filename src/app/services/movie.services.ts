@@ -239,13 +239,66 @@ export class MovieService {
             },
             (error) => {
               console.log(error);
+
               reject(error);
             }
           );
       });
     } catch (error) {
       console.log(error);
-      return Promise.reject(error);
+      throw error;
+    }
+  }
+
+  async editMovieReview(
+    review: ReviewInterface,
+    movieId: number
+  ): Promise<any> {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http
+          .put(`${this.BackenUrl}/media/movie/${movieId}/review`, {
+            review: review.review,
+            rating: review.rating,
+          })
+          .subscribe(
+            (data: any) => {
+              resolve(data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async reviewSerie(review: ReviewInterface, serieId: number) {
+    try {
+      return new Promise((resolve, reject) => {
+        console.log(review);
+        console.log(serieId);
+        this.http
+          .post(`${this.BackenUrl}/media/serie/${serieId}/review`, {
+            review: review.review,
+            rating: review.rating,
+          })
+          .subscribe(
+            (data: any) => {
+              console.log(data);
+              resolve(data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   }
 }
