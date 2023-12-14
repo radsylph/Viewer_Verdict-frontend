@@ -167,3 +167,17 @@ ion-card-subtitle.review{
     font:bold;
     color:white;
   }
+
+  .material-icons {
+    color: grey;
+  }
+  
+  .material-icons.selected {
+    color: gold;
+  }
+
+  .star-icons {
+    display: flex;
+    justify-content: center;
+    font-size: 2em; 
+  }
