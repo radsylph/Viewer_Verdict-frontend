@@ -5,9 +5,12 @@ import {
   MovieInterface,
   SerieInterface,
   GenreInterface,
+  ReviewInterface,
 } from '../interfaces/main';
 import { interval, firstValueFrom } from 'rxjs';
 import { serieGenres, movieGenres } from '../utils/MediaGenres';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class MovieService {
@@ -212,6 +215,33 @@ export class MovieService {
             reject(error);
           }
         );
+      });
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+
+  async reviewMovie(review: ReviewInterface, movieId: number): Promise<any> {
+    try {
+      return new Promise((resolve, reject) => {
+        console.log(review);
+        console.log(movieId);
+        this.http
+          .post(`${this.BackenUrl}/media/movie/${movieId}/review`, {
+            review: review.review,
+            rating: review.rating,
+          })
+          .subscribe(
+            (data: any) => {
+              console.log(data);
+              resolve(data);
+            },
+            (error) => {
+              console.log(error);
+              reject(error);
+            }
+          );
       });
     } catch (error) {
       console.log(error);
