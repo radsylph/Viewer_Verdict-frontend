@@ -4,6 +4,7 @@ import { SerieInterface } from './serie.interface';
 import { GenreInterface } from './genres.interface';
 import { ErrorInterface } from './error.interface';
 import { existingUser, newUser, userProfile } from './user.interface';
+import { ReviewInterface } from './review.interface';
 
 export {
   MediaInterface,
@@ -14,4 +15,5 @@ export {
   existingUser,
   newUser,
   userProfile,
+  ReviewInterface,
 };
