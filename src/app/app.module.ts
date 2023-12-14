@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { MovieService } from './services/movie.services';
-
+import { SessionService } from './services/session.services';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
@@ -27,6 +27,7 @@ import { CommonModule } from '@angular/common';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     MovieService,
+    SessionService,
   ],
   bootstrap: [AppComponent],
 })
