@@ -45,14 +45,14 @@ export class SessionService {
     );
   }
 
-    resetPassword(email: string) {
-        return this.http
-        .post(`${this.BackenUrl}/auth/reset_password`, { email })
-        .pipe(
-            catchError((error) => {
-            console.log(error);
-            return throwError(error);
-            })
-        );
-    }
+  resetPassword(email: string) {
+    return this.http
+      .post(`${this.BackenUrl}/auth/reset_password`, { email })
+      .pipe(
+        catchError((error) => {
+          console.log(error);
+          return throwError(error);
+        })
+      );
+  }
 }
