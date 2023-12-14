@@ -6,7 +6,7 @@ export interface newUser {
   password: string;
   repeat_password: string;
   profilePicture: string | undefined;
-  captchaResponse: string | undefined;
+  captchaResponse?: string | undefined;
   _id?: any;
   bio?: string;
 }
