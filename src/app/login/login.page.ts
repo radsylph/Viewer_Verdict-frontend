@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 import { ErrorInterface, existingUser } from '../interfaces/main';
 import { NavController } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
+import { SessionService } from '../services/session.services';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginPage implements OnInit {
   constructor(
     private http: HttpClient,
     private alert: AlertController,
-    private navigation: NavController
+    private navCtrl: NavController,
+    private ss: SessionService
   ) {}
 
   async setToken(token: string) {
@@ -25,14 +27,19 @@ export class LoginPage implements OnInit {
       key: 'token',
       value: token,
     });
-    this.navigation.navigateForward('/main/tabs/home');
+    return this.navCtrl.navigateForward('/tabs/discover');
   }
 
   async getToken() {
     const token = await Preferences.get({ key: 'token' });
+    console.log(token.value);
     if (token.value) {
-      this.navigation.navigateForward('/main/tabs/home');
+      this.navCtrl.navigateForward('/tabs/discover');
     }
+  }
+
+  async deleteToken() {
+    await Preferences.remove({ key: 'token' });
   }
 
   ngOnInit() {
@@ -72,33 +79,8 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    this.http
-      .post(
-        'https://funaticsbackend-production.up.railway.app/auth/login',
-        this.existingUser
-      )
-      .pipe(
-        catchError((error) => {
-          const errorsMessages = error.error.errors;
-          const newErrors: Array<String> = [];
-          console.log(errorsMessages);
-          errorsMessages.forEach((element: ErrorInterface) => {
-            newErrors.push(element.msg);
-          });
-          console.log(newErrors);
-          this.alert
-            .create({
-              header: 'you have the following errors',
-              message: newErrors.join(', '),
-              buttons: ['OK'],
-            })
-            .then((alert) => {
-              alert.present();
-            });
-          return throwError(error);
-        })
-      )
-      .subscribe((res: any) => {
+    await this.ss.loginUser(this.existingUser).subscribe(
+      (res: any) => {
         this.alert
           .create({
             header: 'Success',
@@ -106,27 +88,29 @@ export class LoginPage implements OnInit {
             buttons: ['OK'],
           })
           .then((alert) => alert.present());
-        const { token } = res;
-        this.setToken(token);
-      });
-
-    // try {
-    //   this.http
-    //     .post(
-    //       'https://funaticsbackend-production.up.railway.app/auth/login',
-    //       this.existingUser
-    //     )
-    //     .subscribe((res: any) => {
-    //       this.alert
-    //         .create({
-    //           header: 'Success',
-    //           message: 'User logged successfully',
-    //           buttons: ['OK'],
-    //         })
-    //         .then((alert) => alert.present());
-    //       const { token } = res;
-    //       this.setToken(token);
-    //     });
-    // } catch (error) {
+        const userToken = res.token;
+        console.log(res.token);
+        this.setToken(userToken);
+      },
+      async (error) => {
+        const errorsMessages = error.error.errors;
+        const newErrors: Array<String> = [];
+        console.log(errorsMessages);
+        errorsMessages.forEach((element: ErrorInterface) => {
+          newErrors.push(element.msg);
+        });
+        console.log(newErrors);
+        this.alert
+          .create({
+            header: 'you have the following errors',
+            message: newErrors.join(', '),
+            buttons: ['OK'],
+          })
+          .then((alert) => {
+            alert.present();
+          });
+        return throwError(error);
+      }
+    );
   }
 }
