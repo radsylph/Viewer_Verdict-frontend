@@ -8,6 +8,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ToastController } from '@ionic/angular';
+import { ReviewInterface } from 'src/app/interfaces/main';
 
 @Component({
   selector: 'app-scream-movies',
@@ -16,11 +18,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 })
 export class ScreamMoviesPage implements OnInit {
   constructor(
-    private http: HttpClient,
     private navCtrl: NavController,
     private ms: MovieService,
     private sanitizer: DomSanitizer,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private message: ToastController
   ) {}
   private movieId: any = '';
   public trailers: String[] = [];
@@ -42,15 +44,31 @@ export class ScreamMoviesPage implements OnInit {
     adult: false,
     language: '',
   };
+  public review: ReviewInterface = {
+    owner: '',
+    mediaId: '',
+    rating: 0,
+    review: '',
+    edited: false,
+    type: '',
+    isComment: false,
+  };
+
   public audienceReviews: any = [];
   public criticReviews: any = [];
+  public hasSession: boolean = false;
 
-  public testposter: any = '';
-  public hasTrailer: boolean = false;
   public isloading: boolean = false;
 
   items: any = [];
   itemsVideo: any = [];
+
+  stars: number[] = [1, 2, 3, 4, 5];
+
+  selectedValue: number = 0;
+  isMouseover = true;
+
+  public data: any = 0;
 
   getVideoUrl2(url: string): SafeResourceUrl {
     const videoId = url.split('v=')[1];
@@ -58,8 +76,13 @@ export class ScreamMoviesPage implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
   }
 
-  openvideo(url: SafeResourceUrl) {
-    window.open(url as string, '_blank');
+  async createMessage(Message: string) {
+    const newMessage = await this.message.create({
+      message: Message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    await newMessage.present();
   }
 
   handleRefresh(event: any) {
@@ -69,8 +92,18 @@ export class ScreamMoviesPage implements OnInit {
     }, 2000);
   }
 
+  async getToken() {
+    const token = await Preferences.get({ key: 'token' });
+    if (token.value) {
+      return (this.hasSession = true);
+    } else {
+      return (this.hasSession = false);
+    }
+  }
+
   async ionViewWillEnter() {
     this.isloading = false;
+    this.data = 0;
     this.movieDetails = {
       title: '',
       overview: '',
@@ -92,6 +125,7 @@ export class ScreamMoviesPage implements OnInit {
     await Preferences.get({ key: 'movieId' }).then((data: any) => {
       this.movieId = data.value;
     });
+    await this.getToken();
     console.log(this.movieId);
     const movieDetailsFromDb = await this.ms.getMovieDetails(this.movieId);
 
@@ -100,9 +134,6 @@ export class ScreamMoviesPage implements OnInit {
     this.criticReviews = movieDetailsFromDb.criticReviews;
     console.log(this.audienceReviews);
     console.log(this.criticReviews);
-    if (this.movieDetails.trailers.length > 0) {
-      this.hasTrailer = true;
-    }
     await setTimeout(() => {
       this.isloading = true;
     }, 2000);
@@ -112,13 +143,6 @@ export class ScreamMoviesPage implements OnInit {
   }
 
   async ngOnInit() {}
-
-  stars: number[] = [1, 2, 3, 4, 5];
-
-  selectedValue: number = 0;
-  isMouseover = true;
-
-  public data: any;
 
   //control del modal
   isModalRating = false;
@@ -134,7 +158,19 @@ export class ScreamMoviesPage implements OnInit {
   }
 
   setOpenRating(isOpen: boolean) {
-    this.isModalRating = isOpen;
+    console.log(this.hasSession);
+    if (this.hasSession === true) {
+      this.isModalRating = isOpen;
+    } else if (this.hasSession === false) {
+      console.log('no hay sesion');
+      this.createMessage('You need to be logged in to rate a movie');
+    }
+  }
+
+  async createReview() {
+    this.review.mediaId = this.movieId;
+    console.log(this.review);
+    await this.ms.reviewMovie(this.review, this.movieId);
   }
 
   //counting stars
@@ -143,6 +179,7 @@ export class ScreamMoviesPage implements OnInit {
     this.selectedValue = star;
     this.data = this.selectedValue;
     console.log(this.data);
+    this.review.rating = this.data;
   }
 
   //for adding star
