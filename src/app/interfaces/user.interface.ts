@@ -22,7 +22,7 @@ export interface userProfile {
   lastname: string;
   username: string;
   email?: string;
-  profilePicture: string | undefined;
+  profilePicture?: string | undefined;
   _id: string;
   bio?: string;
   followers?: any;
