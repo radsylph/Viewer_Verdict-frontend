@@ -1,14 +1,107 @@
-<ion-header [translucent]="true">
+<ion-header collapse="fade">
   <ion-toolbar>
-    <ion-title>user</ion-title>
+    <ion-button slot="start" fill="clear">
+      <ion-button color="funaprimary" class="backbtn" (click)="goBack()"
+        ><ion-icon name="arrow-back-outline"></ion-icon
+      ></ion-button>
+    </ion-button>
+    <ion-buttons fill="clear" slot="end">
+      <ion-button
+        color="funaprimary"
+        class="User-options-btn"
+        (click)="presentActionSheet()"
+        *ngIf="user._id === userLogged"
+      >
+        <ion-icon name="cog-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <!-- <ion-buttons fill="clear" slot="end" *ngIf="user._id === userLogged">
+      <ion-button
+        color="funaprimary"
+        class="User-options-btn"
+        (click)="editUser()"
+      >
+        <ion-icon name="options"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-backdrop [visible]="true"></ion-backdrop>
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">user</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [scrollY]="false">
+  <div>
+    <ion-grid [fixed]="true">
+      <ion-card>
+        <ion-avatar
+          class="avatarUser"
+          *ngIf="user.profilePicture === 'image.png'"
+        >
+          <ion-img
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+          ></ion-img>
+        </ion-avatar>
+        <ion-avatar
+          class="avatarUser"
+          *ngIf="user.profilePicture != 'image.png'"
+        >
+          <ion-img [src]="user.profilePicture"></ion-img>
+        </ion-avatar>
+        <ion-card-header>
+          <ion-card-title
+            ><span class="user"
+              >{{user.name}} {{user.lastname}}</span
+            ></ion-card-title
+          >
+          <ion-card-subtitle class="userName" color="funacomplemen0"
+            ><span class="user">{{user.lastname}}</span></ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-button
+          class="Followbn_edit"
+          fill="solid"
+          color="funaprimary"
+          expand="block"
+          style="margin: 10px; padding: 10px"
+          *ngIf="user._id != userLogged"
+          >Send Message</ion-button
+        >
+
+        <div class="User-statics-container">
+          <ion-grid [fixed]="true">
+            <ion-row> </ion-row>
+          </ion-grid>
+        </div>
+      </ion-card>
+    </ion-grid>
+  </div>
 </ion-content>
+
+<ion-modal [isOpen]="isModalEdit">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Edit User</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenEdit(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input [(ngModel)]="user.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Last Name</ion-label>
+        <ion-input [(ngModel)]="user.lastname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">UserName</ion-label>
+        <ion-input [(ngModel)]="user.username"></ion-input>
+      </ion-item>
+      <div class="submit-container">
+        <ion-button shape="round">Edit</ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

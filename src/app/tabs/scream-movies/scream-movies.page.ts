@@ -398,4 +398,9 @@ export class ScreamMoviesPage implements OnInit {
       console.log(this.selectedValue);
     }
   }
+
+  async goToUser(id: string) {
+    await Preferences.set({ key: 'userToSee', value: id });
+    this.navCtrl.navigateForward('/tabs/user');
+  }
 }

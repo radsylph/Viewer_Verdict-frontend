@@ -55,4 +55,22 @@ export class SessionService {
         })
       );
   }
+
+  getUserInfo(userId: string) {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http.get(`${this.BackenUrl}/auth/getAUser/${userId}`).subscribe(
+          (data: any) => {
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

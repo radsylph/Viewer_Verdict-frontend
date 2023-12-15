@@ -116,4 +116,14 @@ export class DiscoverPage implements OnInit {
     }
     //this.navCtrl.navigateForward(`/tabs/scream-${type}`);
   }
+
+  async goToUser() {
+    const userId: any = await Preferences.get({ key: 'userId' });
+
+    await Preferences.set({
+      key: 'userToSee',
+      value: userId.value?.toString(),
+    });
+    this.navCtrl.navigateForward('/tabs/user');
+  }
 }
