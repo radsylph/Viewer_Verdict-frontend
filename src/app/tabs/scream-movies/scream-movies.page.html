@@ -216,7 +216,7 @@
         <ion-toolbar>
           <ion-row class="ion-align-items-end">
             <ion-col size="auto">
-              <ion-avatar>
+              <ion-avatar (click)="goToUser(review.owner._id)">
                 <img
                   alt="Silhouette of a person's head"
                   src="https://ionicframework.com/docs/img/demos/avatar.svg"

@@ -169,11 +169,11 @@ export class ScreamMoviesPage implements OnInit {
   isModalEdit = false;
   isModalEditResponse = false;
 
-  setOpenAudience(isOpen: boolean) {
+  async setOpenAudience(isOpen: boolean) {
     this.isModalAudience = isOpen;
   }
 
-  setOpenCritics(isOpen: boolean) {
+  async setOpenCritics(isOpen: boolean) {
     this.isModalCritics = isOpen;
   }
 
@@ -400,7 +400,11 @@ export class ScreamMoviesPage implements OnInit {
   }
 
   async goToUser(id: string) {
+    await this.setOpenAudience(false);
+    await this.setOpenCritics(false);
     await Preferences.set({ key: 'userToSee', value: id });
-    this.navCtrl.navigateForward('/tabs/user');
+    setTimeout(() => {
+      this.navCtrl.navigateForward('/tabs/user');
+    }, 500);
   }
 }

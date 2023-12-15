@@ -414,4 +414,13 @@ export class ScreamSeriesPage implements OnInit {
       console.log(this.selectedValue);
     }
   }
+
+  async goToUser(id: string) {
+    await this.setOpenAudience(false);
+    await this.setOpenCritics(false);
+    await Preferences.set({ key: 'userToSee', value: id });
+    setTimeout(() => {
+      this.navCtrl.navigateForward('/tabs/user');
+    }, 500);
+  }
 }
