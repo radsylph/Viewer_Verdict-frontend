@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { newUser, ErrorInterface, existingUser } from '../interfaces/main';
+import {
+  newUser,
+  ErrorInterface,
+  existingUser,
+  userProfile,
+} from '../interfaces/main';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -70,6 +75,24 @@ export class SessionService {
       });
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  }
+
+  editUserInfo(user: userProfile) {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http.put(`${this.BackenUrl}/auth/editUser`, user).subscribe(
+          (data: any) => {
+            console.log(data);
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      });
+    } catch (error) {
       throw error;
     }
   }
