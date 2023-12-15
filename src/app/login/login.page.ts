@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.getToken();
+      this.getToken();
     this.existingUser = {
       user_info: '',
       password: '',
