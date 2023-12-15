@@ -53,7 +53,7 @@
             ></ion-card-title
           >
           <ion-card-subtitle class="userName" color="funacomplemen0"
-            ><span class="user">{{user.lastname}}</span></ion-card-subtitle
+            ><span class="user">{{user.username}}</span></ion-card-subtitle
           >
         </ion-card-header>
         <ion-button
@@ -88,19 +88,35 @@
     </ion-header>
     <ion-content class="ion-padding">
       <ion-item>
-        <ion-label position="floating">Name</ion-label>
-        <ion-input [(ngModel)]="user.name"></ion-input>
+        <ion-input
+          [(ngModel)]="user.name"
+          label="Name"
+          labelPlacement="floating"
+        ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Last Name</ion-label>
-        <ion-input [(ngModel)]="user.lastname"></ion-input>
+        <ion-input
+          [(ngModel)]="user.lastname"
+          label="last Name"
+          labelPlacement="floating"
+        ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">UserName</ion-label>
-        <ion-input [(ngModel)]="user.username"></ion-input>
+        <ion-input
+          [(ngModel)]="user.username"
+          label="user name"
+          labelPlacement="floating"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="user.email"
+          label="email"
+          labelPlacement="floating"
+        ></ion-input>
       </ion-item>
       <div class="submit-container">
-        <ion-button shape="round">Edit</ion-button>
+        <ion-button shape="round" (click)="editUser()">Edit</ion-button>
       </div>
     </ion-content>
   </ng-template>

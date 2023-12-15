@@ -9,7 +9,7 @@ import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { TitleStrategy } from '@angular/router';
-import { userProfile } from '../../interfaces/main';
+import { userProfile, ErrorInterface } from '../../interfaces/main';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -76,10 +76,56 @@ export class UserPage implements OnInit {
   }
 
   async goBack() {
-    this.navCtrl.back();
+    this.navCtrl.navigateRoot('/tabs/discover');
   }
 
-  editUser() {}
+  async editUser() {
+    if (
+      this.user.name === '' ||
+      this.user.lastname === '' ||
+      this.user.username === '' ||
+      this.user.email === ''
+    ) {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'You must fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      const editUser: any = await this.ss.editUserInfo(this.user);
+      console.log(editUser);
+      this.alert
+        .create({
+          header: 'Success',
+          message: 'Your profile has been updated',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      this.setOpenEdit(false);
+    } catch (error: any) {
+      const errorsMessages = error.error.errors;
+      const newErrors: Array<String> = [];
+      console.log(errorsMessages);
+      errorsMessages.forEach((element: ErrorInterface) => {
+        newErrors.push(element.msg);
+      });
+      console.log(newErrors);
+      this.alert
+        .create({
+          header: 'you have the following errors',
+          message: newErrors.join(', '),
+          buttons: ['OK'],
+        })
+        .then((alert) => {
+          alert.present();
+        });
+      this.ionViewWillEnter();
+    }
+  }
   presentActionSheet() {
     this.actionSheet
       .create({
