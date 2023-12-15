@@ -24,13 +24,44 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
+  async getMedias() {
+    try {
+      const medias = await firstValueFrom(
+        this.http.get(`${this.BackenUrl}/media/general`)
+      );
+      return medias;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async searchMedias(name: string) {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http
+          .get(`${this.BackenUrl}/media/general/${name}`)
+          .subscribe((data: any) => {
+            const Medias: MediaInterface[] = data;
+            resolve(Medias),
+              (error: any) => {
+                reject(error);
+              };
+          });
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async getPopularMedias() {
     let popularSeries: any = [];
     let popularMovies: any = [];
     let popularMedias: any = {};
     let requests: any = [];
     try {
-      for (let page = 1; page <= 2; page++) {
+      for (let page = 1; page <= 3; page++) {
         let request = this.http
           .get(
             `https://api.themoviedb.org/3/movie/popular?api_key=${this.apiKey}&page=${page}`
@@ -79,7 +110,7 @@ export class MovieService {
             Series.forEach((serie: any) => {
               const genres: any[] = [];
               serie.genre_ids.forEach((id: number) => {
-                const genre = movieGenres.find(
+                const genre = serieGenres.find(
                   (genre: GenreInterface) => genre.id == id
                 );
                 genres.push(genre);
