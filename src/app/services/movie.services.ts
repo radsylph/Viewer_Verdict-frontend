@@ -301,4 +301,78 @@ export class MovieService {
       throw error;
     }
   }
+
+  async editSerieReview(review: ReviewInterface, serieId: number) {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http
+          .put(`${this.BackenUrl}/media/serie/${serieId}/review`, {
+            review: review.review,
+            rating: review.rating,
+          })
+          .subscribe(
+            (data: any) => {
+              resolve(data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async replyReview(
+    review: ReviewInterface,
+    reviewId: number,
+    ownerToReply: string
+  ) {
+    try {
+      return new Promise((resolve, reject) => {
+        console.log(review.review);
+        this.http
+          .post(`${this.BackenUrl}/media/review/${reviewId}`, {
+            comment: review.review,
+            reply: ownerToReply,
+          })
+          .subscribe(
+            (data: any) => {
+              console.log(data);
+              resolve(data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async editReply(review: ReviewInterface, reviewId: number) {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http
+          .put(`${this.BackenUrl}/media/response/${reviewId}`, {
+            comment: review.review,
+          })
+          .subscribe(
+            (data: any) => {
+              resolve(data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
