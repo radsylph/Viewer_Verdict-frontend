@@ -196,3 +196,17 @@ ion-card-subtitle.review{
     justify-content: center;
     font-size: 2em; 
   }
+  .submit-container{
+    display: flex;
+          align-items: center;
+          align-self: center;
+          align-content: center;
+          justify-content: center;
+          width: 100%;
+  }
+  .submit-container > ion-button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 300px;
+  }

@@ -57,10 +57,23 @@ export class ScreamMoviesPage implements OnInit {
     isComment: false,
   };
 
+  public response: ReviewInterface = {
+    owner: '',
+    mediaId: '',
+    rating: 0,
+    review: '',
+    edited: false,
+    type: '',
+    isComment: true,
+  };
+
   public audienceReviews: any = [];
   public criticReviews: any = [];
   public hasSession: boolean = false;
   public userId: any = '';
+  public responseId: any = 0;
+  public reviewToReply: any = {};
+  public ownerToReply: any = {};
 
   public isloading: boolean = false;
 
@@ -154,6 +167,7 @@ export class ScreamMoviesPage implements OnInit {
   isModalCritics = false;
   isModalResponse = false;
   isModalEdit = false;
+  isModalEditResponse = false;
 
   setOpenAudience(isOpen: boolean) {
     this.isModalAudience = isOpen;
@@ -173,12 +187,19 @@ export class ScreamMoviesPage implements OnInit {
     }
   }
 
-  setOpenResponse(isOpen: boolean) {
+  setOpenResponse(isOpen: boolean, reviewId: any, ownerToReply: any) {
+    this.ownerToReply = ownerToReply;
+    this.reviewToReply = reviewId;
     this.isModalResponse = isOpen;
   }
 
   setOpenEdit(isOpen: boolean) {
     this.isModalEdit = isOpen;
+  }
+
+  setOpenEditResponse(isOpen: boolean, responseId: any) {
+    this.responseId = responseId;
+    this.isModalEditResponse = isOpen;
   }
 
   async createReview() {
@@ -211,28 +232,88 @@ export class ScreamMoviesPage implements OnInit {
     }
   }
 
-  async createResponse() {}
+  async replyReview() {
+    console.log(this.response);
+    if (this.response.review == '') {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      console.log(this.response);
+      console.log(this.reviewToReply);
+      console.log(this.ownerToReply);
+      await this.ms.replyReview(
+        this.response,
+        this.reviewToReply,
+        this.ownerToReply
+      );
+      this.createMessage('Reply created successfully');
+      this.ionViewWillEnter();
+      this.setOpenResponse(false, 0, {});
+      this.reviewToReply = 0;
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
 
-  async editReview(id: any) {
-    const antionSheet = await this.actionSheetCtrl
-      .create({
-        header: 'Edit Review',
-        buttons: [
-          {
-            text: 'Edit',
-            icon: 'create-outline',
-            handler: () => {
-              this.setOpenEdit(true);
+  async editReview(id: any, isComment: boolean) {
+    console.log(isComment);
+    console.log(id);
+
+    if (isComment === false) {
+      const antionSheet = await this.actionSheetCtrl
+        .create({
+          header: 'Edit Review',
+          buttons: [
+            {
+              text: 'Edit',
+              icon: 'create-outline',
+              handler: () => {
+                this.setOpenEdit(true);
+              },
             },
-          },
-          {
-            text: 'Cancel',
-            icon: 'close',
-            role: 'cancel',
-          },
-        ],
-      })
-      .then((actionSheet) => actionSheet.present());
+            {
+              text: 'Cancel',
+              icon: 'close',
+              role: 'cancel',
+            },
+          ],
+        })
+        .then((actionSheet) => actionSheet.present());
+    } else {
+      const antionSheet = await this.actionSheetCtrl
+        .create({
+          header: 'Edit Response',
+          buttons: [
+            {
+              text: 'Edit',
+              icon: 'create-outline',
+              handler: () => {
+                this.setOpenEditResponse(true, id);
+              },
+            },
+            {
+              text: 'Cancel',
+              icon: 'close',
+              role: 'cancel',
+            },
+          ],
+        })
+        .then((actionSheet) => actionSheet.present());
+    }
   }
 
   async editReview2() {
@@ -253,6 +334,36 @@ export class ScreamMoviesPage implements OnInit {
       this.createMessage('Review edited successfully');
       this.ionViewWillEnter();
       this.setOpenEdit(false);
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
+  async editResponse() {
+    if (this.response.review == '') {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      console.log(this.response);
+      console.log(this.movieId);
+      await this.ms.editReply(this.response, this.responseId);
+      this.createMessage('Response edited successfully');
+      this.ionViewWillEnter();
+      this.setOpenEditResponse(false, 0);
     } catch (error: any) {
       console.log(error);
       this.alert

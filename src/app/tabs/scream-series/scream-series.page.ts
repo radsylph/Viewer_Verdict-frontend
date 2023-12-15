@@ -9,6 +9,8 @@ import { ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
+import { TitleStrategy } from '@angular/router';
 
 @Component({
   selector: 'app-scream-series',
@@ -23,9 +25,11 @@ export class ScreamSeriesPage implements OnInit {
     private sanitizer: DomSanitizer,
     public modalController: ModalController,
     private message: ToastController,
-    private alert: AlertController
+    private alert: AlertController,
+    private actionSheetCtrl: ActionSheetController
   ) {}
 
+  public userId: any = '';
   items: any = [];
   itemsVideo: any = [];
   itemsSeasons: any = [];
@@ -58,9 +62,22 @@ export class ScreamSeriesPage implements OnInit {
     isComment: false,
   };
 
+  public response: ReviewInterface = {
+    owner: '',
+    mediaId: '',
+    rating: 0,
+    review: '',
+    edited: false,
+    type: '',
+    isComment: true,
+  };
+
+  public responseId: any = 0;
   public audienceReviews: any = [];
   public criticReviews: any = [];
   public data: any = 0;
+  public reviewToReply: any = {};
+  public ownerToReply: any = {};
   public hasSession: boolean = false;
 
   handleRefresh(event: any) {
@@ -72,8 +89,10 @@ export class ScreamSeriesPage implements OnInit {
 
   async getToken() {
     const token = await Preferences.get({ key: 'token' });
+    const userId = await Preferences.get({ key: 'userId' });
     console.log(token);
     if (token.value) {
+      this.userId = userId.value;
       return (this.hasSession = true);
     } else {
       return (this.hasSession = false);
@@ -98,6 +117,25 @@ export class ScreamSeriesPage implements OnInit {
       voteAverage: 0,
       voteCount: 0,
     };
+    this.review = {
+      owner: '',
+      mediaId: '',
+      rating: 0,
+      review: '',
+      edited: false,
+      type: '',
+      isComment: false,
+    };
+    this.response = {
+      owner: '',
+      mediaId: '',
+      rating: 0,
+      review: '',
+      edited: false,
+      type: '',
+      isComment: true,
+    };
+    this.reviewToReply = 0;
     await Preferences.get({ key: 'serieId' }).then((data: any) => {
       this.serieId = data.value;
     });
@@ -136,6 +174,9 @@ export class ScreamSeriesPage implements OnInit {
   isModalRating = false;
   isModalAudience = false;
   isModalCritics = false;
+  isModalEdit = false;
+  isModalResponse = false;
+  isModalEditResponse = false;
 
   setOpenAudience(isOpen: boolean) {
     this.isModalAudience = isOpen;
@@ -143,6 +184,15 @@ export class ScreamSeriesPage implements OnInit {
 
   setOpenCritics(isOpen: boolean) {
     this.isModalCritics = isOpen;
+  }
+
+  setOpenEdit(isOpen: boolean) {
+    this.isModalEdit = isOpen;
+  }
+
+  setOpenEditResponse(isOpen: boolean, responseId: any) {
+    this.responseId = responseId;
+    this.isModalEditResponse = isOpen;
   }
 
   setOpenRating(isOpen: boolean) {
@@ -153,6 +203,12 @@ export class ScreamSeriesPage implements OnInit {
       console.log('no hay sesion');
       this.createMessage('You need to be logged in to rate a movie');
     }
+  }
+
+  setOpenResponse(isOpen: boolean, reviewId: any, ownerToReply: any) {
+    this.ownerToReply = ownerToReply;
+    this.reviewToReply = reviewId;
+    this.isModalResponse = isOpen;
   }
 
   getVideoUrl2(url: string): SafeResourceUrl {
@@ -190,6 +246,152 @@ export class ScreamSeriesPage implements OnInit {
         .then((alert) => alert.present());
     }
   }
+
+  async editReview(id: any, isComment: boolean) {
+    console.log(isComment);
+    console.log(id);
+
+    if (isComment === false) {
+      const antionSheet = await this.actionSheetCtrl
+        .create({
+          header: 'Edit Review',
+          buttons: [
+            {
+              text: 'Edit',
+              icon: 'create-outline',
+              handler: () => {
+                this.setOpenEdit(true);
+              },
+            },
+            {
+              text: 'Cancel',
+              icon: 'close',
+              role: 'cancel',
+            },
+          ],
+        })
+        .then((actionSheet) => actionSheet.present());
+    } else {
+      const antionSheet = await this.actionSheetCtrl
+        .create({
+          header: 'Edit Response',
+          buttons: [
+            {
+              text: 'Edit',
+              icon: 'create-outline',
+              handler: () => {
+                this.setOpenEditResponse(true, id);
+              },
+            },
+            {
+              text: 'Cancel',
+              icon: 'close',
+              role: 'cancel',
+            },
+          ],
+        })
+        .then((actionSheet) => actionSheet.present());
+    }
+  }
+
+  async editReview2() {
+    this.review.mediaId = this.serieId;
+    console.log(this.response);
+    if (this.review.review == '') {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      await this.ms.editSerieReview(this.review, this.serieId);
+      this.createMessage('Response edited successfully');
+      this.ionViewWillEnter();
+      this.setOpenEdit(false);
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
+  async editResponse() {
+    if (this.response.review == '') {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      console.log(this.response);
+      console.log(this.serieId);
+      await this.ms.editReply(this.response, this.responseId);
+      this.createMessage('Response edited successfully');
+      this.ionViewWillEnter();
+      this.setOpenEditResponse(false, 0);
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
+  async replyReview() {
+    console.log(this.response);
+    if (this.response.review == '') {
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Please fill all the fields',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+      return;
+    }
+    try {
+      console.log(this.response);
+      console.log(this.reviewToReply);
+      console.log(this.ownerToReply);
+      await this.ms.replyReview(
+        this.response,
+        this.reviewToReply,
+        this.ownerToReply
+      );
+      this.createMessage('Reply created successfully');
+      this.ionViewWillEnter();
+      this.setOpenResponse(false, 0, {});
+      this.reviewToReply = 0;
+    } catch (error: any) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: error.error.msg,
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
+  async editReply() {}
 
   countStar(star: number) {
     this.isMouseover = false;

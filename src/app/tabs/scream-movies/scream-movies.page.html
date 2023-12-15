@@ -227,12 +227,16 @@
               <ion-col class="ion-align-self-center"
                 >{{review.owner.username}}</ion-col
               >
-              <ion-icon class="verified" name="star"></ion-icon><br />
-              <ion-col class="ion-align-self-center">Critic</ion-col>
+              <div *ngIf="review.owner.isCritic === true">
+                <ion-icon class="verified" name="star"></ion-icon>
+              </div>
             </ion-col>
             <ion-col class="ion-align-items-start">
               <div *ngIf="userId === review.owner._id">
-                <ion-button fill="clear" (click)="editReview(review._id)">
+                <ion-button
+                  fill="clear"
+                  (click)="editReview(review._id, review.isComment)"
+                >
                   <ion-icon
                     class="OptTwits"
                     name="ellipsis-vertical"
@@ -243,11 +247,7 @@
           </ion-row>
         </ion-toolbar>
 
-        <ion-card-content
-          [innerHTML]="review.review"
-          (click)="setOpenResponse(true)"
-        >
-        </ion-card-content>
+        <ion-card-content> {{review.review}} </ion-card-content>
         <ion-grid>
           <ion-row>
             <ion-col>{{"Score: " + review.rating + "/5"}}</ion-col>
@@ -297,21 +297,39 @@
             </ion-col>
             <ion-col class="ion-align-self-center"
               >{{review.owner.username}}</ion-col
-            >
+            ><ion-col class="ion-align-items-start">
+              <div *ngIf="userId === review.owner._id">
+                <ion-button
+                  fill="clear"
+                  (click)="editReview(review._id, review.isComment)"
+                >
+                  <ion-icon
+                    class="OptTwits"
+                    name="ellipsis-vertical"
+                  ></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
           </ion-row>
         </ion-toolbar>
-        <ion-col>
-          <div *ngIf="userId === review.owner._id">
-            <ion-button fill="clear">
-              <ion-icon class="OptTwits" name="ellipsis-vertical"></ion-icon>
-            </ion-button>
-          </div>
-        </ion-col>
 
-        <ion-card-content [innerHTML]="review.review"> </ion-card-content>
+        <ion-card-content
+          (click)="setOpenResponse(true, review._id, review.owner.username)"
+          *ngIf="review.isComment === false"
+        >
+          {{review.review}}
+        </ion-card-content>
+        <ion-card-content
+          (click)="setOpenResponse(true, review._id , review.owner.username)"
+          *ngIf="review.isComment === true"
+        >
+          {{"@" + review.replyTo + " " + review.review}}
+        </ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col>{{"Score: " + review.rating + "/5"}}</ion-col>
+            <ion-col *ngIf="review.isComment === false"
+              >{{"Score: " + review.rating + "/5"}}</ion-col
+            >
             <ion-col *ngIf="review.edited">
               <small
                 ><em
@@ -357,13 +375,15 @@
         ></ion-icon>
       </div>
 
-      <p>What did you think of the movie?(optional)</p>
+      <p>What did you think of the movie ?</p>
       <ion-textarea
         placeholder="Your review help others find great movies and shows to watch."
         [autoGrow]="true"
         [(ngModel)]="review.review"
       ></ion-textarea>
-      <ion-button shape="round" (click)="createReview()">submit</ion-button>
+      <div class="submit-container">
+        <ion-button shape="round" (click)="createReview()">Submit</ion-button>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>
@@ -377,7 +397,9 @@
         </ion-avatar>
 
         <ion-buttons slot="end">
-          <ion-button (click)="setOpenResponse(false)">Close</ion-button>
+          <ion-button (click)="setOpenResponse(false, 0 , {})"
+            >Close</ion-button
+          >
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -385,9 +407,11 @@
       <ion-textarea
         placeholder="Write here the response to the review."
         [autoGrow]="true"
-        [(ngModel)]="review.review"
+        [(ngModel)]="response.review"
       ></ion-textarea>
-      <ion-button shape="round" (click)="createReview()">submit</ion-button>
+      <div class="submit-container">
+        <ion-button shape="round" (click)="replyReview()">Reply</ion-button>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>
@@ -401,7 +425,7 @@
         </ion-avatar>
 
         <ion-buttons slot="end">
-          <ion-button (click)="setOpenRating(false)">Close</ion-button>
+          <ion-button (click)="setOpenEdit(false)">Close</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -421,7 +445,37 @@
         [autoGrow]="true"
         [(ngModel)]="review.review"
       ></ion-textarea>
-      <ion-button shape="round" (click)="editReview2()">Edit</ion-button>
+      <div class="submit-container">
+        <ion-button shape="round" (click)="editReview2()">Edit</ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalEditResponse">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-avatar class="miniAvatar">
+          <ion-img src="../../../../assets/img/serve.png"></ion-img>
+        </ion-avatar>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpenEditResponse(false, 0 )"
+            >Close</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-textarea
+        placeholder="Write here the response to the review."
+        [autoGrow]="true"
+        [(ngModel)]="response.review"
+      ></ion-textarea>
+      <div class="submit-container">
+        <ion-button shape="round" (click)="editResponse()">Edit</ion-button>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>
