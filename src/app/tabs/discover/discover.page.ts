@@ -27,7 +27,6 @@ export class DiscoverPage implements OnInit {
   async handleRefresh(event: any) {
     setTimeout(async () => {
       this.isloading = false;
-      // Llamada a la función para actualizar los datos
       this.popularMedia = await this.ms.getPopularMedias();
       this.trendingMedia = await this.ms.getWeeklyMedias();
 
@@ -114,7 +113,6 @@ export class DiscoverPage implements OnInit {
       await this.goToSerieDetails(mediaId);
       return;
     }
-    //this.navCtrl.navigateForward(`/tabs/scream-${type}`);
   }
 
   async goToUser() {

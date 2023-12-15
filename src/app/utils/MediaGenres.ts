@@ -1,3 +1,5 @@
+import { GenreInterface } from '../interfaces/genres.interface';
+
 export const serieGenres: any = [
   {
     id: 10759,
@@ -146,3 +148,16 @@ export const movieGenres: any = [
     name: 'Western',
   },
 ];
+
+export const mediaGenres: any = {
+  combinedGenres: [...movieGenres, ...serieGenres].reduce(
+    (acc: any, genre: any) => {
+      const index = acc.findIndex((g: any) => g.name === genre.name);
+      if (index === -1) {
+        acc.push(genre);
+      }
+      return acc;
+    },
+    []
+  ),
+};
