@@ -119,7 +119,6 @@ export class DiscoverPage implements OnInit {
 
   async goToUser() {
     const userId: any = await Preferences.get({ key: 'userId' });
-
     await Preferences.set({
       key: 'userToSee',
       value: userId.value?.toString(),
