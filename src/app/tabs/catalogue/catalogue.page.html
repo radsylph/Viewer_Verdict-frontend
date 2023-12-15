@@ -1,123 +1,153 @@
 <ion-header collapse="fade">
   <ion-toolbar>
     <ion-grid [fixed]="true">
-      <ion-row>   
-          <ion-searchbar></ion-searchbar>
+      <ion-row>
+        <ion-col size="10">
+          <ion-searchbar [(ngModel)]="mediaName"></ion-searchbar>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button expand="full" (click)="searchMedias(mediaName)">
+            <ion-icon slot="icon-only" name="search"></ion-icon>
+          </ion-button>
+        </ion-col>
       </ion-row>
-
-      
     </ion-grid>
+    <div *ngIf="!isloading">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+    <div *ngIf="isloading">
+      <ion-progress-bar
+        type="indeterminate"
+        style="display: none"
+      ></ion-progress-bar>
+    </div>
   </ion-toolbar>
 </ion-header>
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
 
 <ion-content>
-<ion-grid>
-  <ion-row>
-    <ion-col>
-      <ion-select
-      label="gender"
-      [compareWith]="compareWith"
-      placeholder="All"
-      (ionChange)="handleChange($event)"
-      [multiple]="true"
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-select
-      label="Year"
-      [compareWith]="compareWith"
-      placeholder="Select year"
-      (ionChange)="handleChange($event)"
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-select
-      label="month"
-      [compareWith]="compareWith"
-      placeholder="Select month"
-      (ionChange)="handleChange($event)" 
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-select
-      label="Type"
-      [compareWith]="compareWith"
-      placeholder="Select Type"
-      (ionChange)="handleChange($event)"
-      [multiple]="true"
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-select
-      label="State"
-      [compareWith]="compareWith"
-      placeholder="Select State"
-      (ionChange)="handleChange($event)"
-      
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-select
-      label="order"
-      [compareWith]="compareWith"
-      placeholder="Select order"
-      (ionChange)="handleChange($event)"
-      
-    >
-      <ion-select-option *ngFor="let food of foods" [value]="food">{{ food.name }}</ion-select-option>
-    </ion-select>
-    </ion-col>
-    <ion-col>
-      <ion-button fill="solid">
-      Filter
-      <ion-icon slot="end" name="filter"></ion-icon>
-    </ion-button>
-    </ion-col>
-    
-    
-  </ion-row>
-</ion-grid>
+  <ion-refresher
+    slot="fixed"
+    [pullFactor]="0.5"
+    [pullMin]="100"
+    [pullMax]="200"
+    (ionRefresh)="handleRefresh($event)"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-between">
+      <!-- <ion-col size="12" size-md="2" class="ion-margin-bottom">
+        <ion-button
+          fill="solid"
+          (click)="filterMedias()"
+          class="ion-padding"
+          style="width: 100%"
+        >
+          Filter
+          <ion-icon slot="end" name="filter"></ion-icon>
+        </ion-button>
+      </ion-col> -->
+      <ion-col size="12" size-md="2" class="ion-margin-bottom">
+        <ion-select
+          label="Genre/s"
+          [(ngModel)]="selectedGenres"
+          (ionChange)="handleChange($event, 'genre')"
+          [multiple]="true"
+          class="ion-padding ion-margin"
+        >
+          <ion-select-option
+            *ngFor="let genre of genres.combinedGenres"
+            [value]="genre.name"
+          >
+            {{ genre.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-col>
 
-  <ion-grid > 
-    <ion-row lines="none"> 
-        <ion-col size="6" *ngFor="let item of items; let index"  class="P_cart ion-activatable ripple-parent" routerLink="/tabs/scream-movies">
-          <img alt="Silhouette of mountains" src="https://m.media-amazon.com/images/M/MV5BNDA1ODI3MTcyNl5BMl5BanBnXkFtZTcwNDkyODYwNw@@._V1_.jpg" />
-          <ion-grid>
-            <ion-row>
-              <ion-col>XXXXXXXXXXXXXXXXXXXXXXXXX</ion-col>
-              <ion-col size="auto"><ion-chip class="type">Default</ion-chip></ion-col>
-              <ion-col size="auto">
-                <ion-button class="score">
-                  <ion-icon color="warning" slot="start" name="star"></ion-icon>5
-                </ion-button>
-              </ion-col>
+      <ion-col size="12" size-md="2" class="ion-margin-bottom">
+        <ion-select
+          label="Media Type"
+          [compareWith]="compareWith"
+          [(ngModel)]="selectedType"
+          (ionChange)="handleChange($event , 'type')"
+          class="ion-padding ion-margin"
+        >
+          <ion-select-option *ngFor="let type of typeOptions" [value]="type">
+            {{ type.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-col>
 
-            </ion-row>
-          </ion-grid>
+      <ion-col size="12" size-md="2" class="ion-margin-bottom">
+        <ion-datetime
+          displayFormat="YYYY"
+          presentation="year"
+          placeholder="Select Date"
+          [(ngModel)]="selectedDate"
+          (ionChange)="handleChange($event, 'date')"
+          class="ion-padding ion-margin"
+        ></ion-datetime>
+      </ion-col>
 
-          <ion-ripple-effect></ion-ripple-effect>
-
-
-            
-        </ion-col>
-        
+      <ion-col size="12" size-md="2" class="ion-margin-bottom">
+        <ion-select
+          label="Popularity"
+          [compareWith]="compareWith"
+          [(ngModel)]="selectedPopularity"
+          (ionChange)="handleChange($event , 'popularity')"
+          class="ion-padding ion-margin"
+        >
+          <ion-select-option
+            *ngFor="let option of popularityOptions"
+            [value]="option"
+          >
+            {{ option.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-col>
     </ion-row>
-   
+  </ion-grid>
 
-</ion-grid>
-<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-  <ion-infinite-scroll-content></ion-infinite-scroll-content>
-</ion-infinite-scroll>
+  <ion-grid>
+    <ion-row lines="none">
+      <ion-col
+        size="6"
+        *ngFor="let media of medias; let index"
+        class="P_cart ion-activatable ripple-parent"
+        (click)="goToMediaDetails(media.idApi, media.type)"
+        style="margin-bottom: 20px"
+      >
+        <img
+          alt="Silhouette of mountains"
+          [src]="media.poster"
+          style="width: 100%; height: auto; border-radius: 5px"
+        />
+        <ion-grid>
+          <ion-row>
+            <ion-col style="font-weight: bold"
+              >{{media.title || media.name}}</ion-col
+            >
+            <ion-col size="auto"
+              ><ion-chip
+                class="type"
+                style="background-color: #ccc; color: #000"
+                >{{media.type}}</ion-chip
+              ></ion-col
+            >
+          </ion-row>
+        </ion-grid>
+
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
-
-

@@ -53,12 +53,12 @@ ion-toolbar{
   }
   
   ion-chip.type{
-    font-size: 20px;
+    font-size: 24px;
   }
 
-  ion-button.score{
-    width: 40px;
-    height: auto;
+  ion-backdrop {
+    background: var(--ion-color-viewer_secundary-contrast);
+    opacity: 0.9;
   }
 
   ion-card{
