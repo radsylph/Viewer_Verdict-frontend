@@ -50,6 +50,7 @@ export class DiscoverPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.getToken();
     this.popularMedia = await this.ms.getPopularMedias();
     this.trendingMedia = await this.ms.getWeeklyMedias();
     this.generateItems();

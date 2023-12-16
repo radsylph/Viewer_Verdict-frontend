@@ -15,6 +15,33 @@
 <ion-content>
   <div class="ion-padding container">
     <h1>Signup</h1>
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-avatar
+            class="avatarUser"
+            (click)="openModel()"
+            *ngIf="newUser.profilePicture === 'imagen.png' || !newUser.profilePicture"
+          >
+            <ion-img
+              src="https://ionicframework.com/docs/img/demos/avatar.svg"
+            ></ion-img>
+          </ion-avatar>
+          <ion-avatar
+            class="avatarUser"
+            (click)="openModel()"
+            *ngIf="newUser.profilePicture != 'imagen.png'"
+          >
+            <ion-img [src]="newUser.profilePicture"></ion-img>
+          </ion-avatar>
+          <label>Select your avatar</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+    </ion-grid>
     <div class="form-container">
       <ion-item>
         <ion-input
@@ -115,3 +142,48 @@
     </div>
   </div>
 </ion-content>
+
+<ion-modal #modal [isOpen]="isModalOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title
+          ><select>
+            you avatar
+          </select></ion-title
+        >
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <p class="ion-padding-horizontal">Select an avatar to continue.</p>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let avatar of avatares; let i = index">
+            <ion-card (click)="selectAvatar(i)">
+              <ion-thumbnail
+                style="width: auto; height: auto; background-size: cover"
+              >
+                <img alt="Silhouette of mountains" [src]="avatar.url" />
+              </ion-thumbnail>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <ion-checkbox
+                      id="terms"
+                      [checked]="avatar.selected"
+                    ></ion-checkbox>
+                    ></ion-col
+                  >
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>
