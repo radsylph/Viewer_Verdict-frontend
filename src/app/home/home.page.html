@@ -1,29 +1,57 @@
-<ion-header>
-    <ion-grid>
-        <ion-row>
-            <ion-col ></ion-col>
-            <ion-col ></ion-col>
-            <ion-col ></ion-col>
-            <ion-col ></ion-col>
-          <ion-col ></ion-col>
-        <ion-col size="3"><ion-button class="skip" color="viewer_secundary"  id="open-toast" size="small"  routerLink="/tabs/discover" routerDirection="forward">skip</ion-button>
-        <ion-toast trigger="open-toast" message="We recommend logging in for the full experience." [duration]="5000"></ion-toast>
-        </ion-col>
-        </ion-row>
-      </ion-grid>
-</ion-header>
+<ion-toolbar color="undefine">
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col size="3"
+        ><ion-button
+          class="skip"
+          color="viewer_secundary"
+          id="open-toast"
+          size="small"
+          routerLink="/tabs/discover"
+          routerDirection="forward"
+          >skip</ion-button
+        >
+        <ion-toast
+          trigger="open-toast"
+          message="We recommend logging in for the full experience."
+          [duration]="5000"
+        ></ion-toast>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>
 
-<ion-content class="ion-padding ion-text-center">
-    <div class="container">
-        <div class="page-header">
-            <h1 >Welcome to </h1>
-            <h2>Viewer Verdict</h2>
-        </div>
-          <img src="../../assets/img/logo VV en blanco.png">
-
-          <div class="button-container">
-              <ion-button class="joinbtn" expand="block" color="viewer_secundary" routerLink="/login" routerDirection="forward">Log in</ion-button>
-              <ion-button expand="block" color="dark" fill="clear" routerLink="/signup" routerDirection="forward">Signup</ion-button>
-          </div>
+<ion-content class="ion-padding ion-text-center" [fullscreen]="true">
+  <div class="container">
+    <div class="page-header">
+      <h1>Welcome to</h1>
+      <h2>Viewer Verdict</h2>
     </div>
+
+    <img src="../../assets/img/logo VV en blanco.png" (click)="cameo()" />
+
+    <div class="button-container">
+      <ion-button
+        class="joinbtn"
+        expand="block"
+        color="viewer_secundary"
+        routerLink="/login"
+        routerDirection="forward"
+        >Log in</ion-button
+      >
+      <ion-button
+        class="signupbtn"
+        expand="block"
+        color="viewer_secundary"
+        routerLink="/signup"
+        routerDirection="forward"
+        >Signup</ion-button
+      >
+    </div>
+  </div>
 </ion-content>

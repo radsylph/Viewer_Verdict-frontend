@@ -8,8 +8,9 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  items:any = [];
-  items0:any = [];
+  items: any = [];
+  items0: any = [];
+  public counter: number = 0;
 
   ngOnInit() {
     this.generateItems();
@@ -26,7 +27,25 @@ export class HomePage implements OnInit {
     }
   }
 
-  onIonInfinite(ev:Event) {
+  cameo() {
+    this.counter++;
+    console.log('cameo');
+    console.log(this.counter);
+
+    if (this.counter === 5) {
+      let audio = new Audio();
+      audio.src = 'assets/cameo.mp3';
+      audio.load();
+      audio.play();
+    } else if (this.counter === 10) {
+      let audio2 = new Audio();
+      audio2.src = 'assets/cameo2.mp3';
+      audio2.load();
+      audio2.play();
+      this.counter = 0; // resetea el contador después de reproducir el segundo audio
+    }
+  }
+  onIonInfinite(ev: Event) {
     this.generateItems();
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();

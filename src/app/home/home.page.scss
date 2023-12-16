@@ -1,8 +1,17 @@
+ion-content::part(background) {
+  background: url(../../assets/img/cartelera.jpg);
+  background-size: cover; 
+}
+
+
+
+
 .container{
   height: 90%;
   display: grid;
   justify-content: center;
   align-items: center;
+  color: #fff;
 }
 
 
@@ -15,6 +24,11 @@
 ion-button.joinbtn{
   background-color:var( --ion-color-viewer_secundary);
   color: var(--ion-color-funaprimary-contrast);
+}
+
+ion-button.signupbtn{
+  background-color:var( --ion-color-viewer_secundary);
+  color: #fff;
 }
 
 ion-button.skip{
