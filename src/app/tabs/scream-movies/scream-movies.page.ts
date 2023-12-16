@@ -400,6 +400,11 @@ export class ScreamMoviesPage implements OnInit {
   }
 
   async goToUser(id: string) {
+    if (this.hasSession === false) {
+      console.log('no hay sesion');
+      this.createMessage('You need to be logged to chat with another person');
+      return;
+    }
     await this.setOpenAudience(false);
     await this.setOpenCritics(false);
     await Preferences.set({ key: 'userToSee', value: id });

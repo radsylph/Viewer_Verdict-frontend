@@ -416,6 +416,10 @@ export class ScreamSeriesPage implements OnInit {
   }
 
   async goToUser(id: string) {
+    if (this.hasSession === false) {
+      this.createMessage('You need to be logged in to see a user');
+      return;
+    }
     await this.setOpenAudience(false);
     await this.setOpenCritics(false);
     await Preferences.set({ key: 'userToSee', value: id });

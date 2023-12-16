@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
 import { MovieService } from '../../services/movie.services';
 import { Preferences } from '@capacitor/preferences';
+import { ToastController } from '@ionic/angular';
 
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 @Component({
@@ -14,13 +15,15 @@ export class DiscoverPage implements OnInit {
   constructor(
     private http: HttpClient,
     private navCtrl: NavController,
-    private ms: MovieService
+    private ms: MovieService,
+    public toastController: ToastController
   ) {}
   series: any = [];
   movies: any = [];
   medias: any = [];
   popularMedia: any = [];
   trendingMedia: any = [];
+  hasSession: boolean = false;
 
   isloading: boolean = false;
 
@@ -67,13 +70,6 @@ export class DiscoverPage implements OnInit {
   private generateItems() {
     const count = this.series.length + 1;
     const count0 = this.movies.length + 1;
-    // for (let i = 0; i < 8; i++) {
-    //   this.series.push(`Item ${count + i}`);
-    // }
-
-    // for (let i = 0; i < 8; i++) {
-    //   this.movies.push(`Item ${count0 + i}`);
-    // }
   }
   //controla el scroll
   onIonInfinite(ev: Event) {
@@ -81,6 +77,16 @@ export class DiscoverPage implements OnInit {
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 500);
+  }
+
+  async getToken() {
+    const token = await Preferences.get({ key: 'token' });
+    console.log(token);
+    if (token.value) {
+      return (this.hasSession = true);
+    } else {
+      return (this.hasSession = false);
+    }
   }
 
   async goToMovieDetails(id: number) {
@@ -116,6 +122,14 @@ export class DiscoverPage implements OnInit {
   }
 
   async goToUser() {
+    if (this.hasSession === false) {
+      const toast = await this.toastController.create({
+        message: 'You must be logged in to see your profile',
+        duration: 2000,
+      });
+      toast.present();
+      return;
+    }
     const userId: any = await Preferences.get({ key: 'userId' });
     await Preferences.set({
       key: 'userToSee',
