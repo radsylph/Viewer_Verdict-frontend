@@ -29,7 +29,6 @@ export class SessionService {
   };
 
   private BackenUrl: string =
-    'http://localhost:7338' ||
     'https://viewerverdict-backend-production.up.railway.app';
 
   createUser(newUser: newUser) {
@@ -93,6 +92,25 @@ export class SessionService {
         );
       });
     } catch (error) {
+      throw error;
+    }
+  }
+
+  getAllUsers() {
+    try {
+      return new Promise((resolve, reject) => {
+        this.http.get(`${this.BackenUrl}/auth/getAllUsers`).subscribe(
+          (data: any) => {
+            console.log(data);
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      });
+    } catch (error) {
+      console.log(error);
       throw error;
     }
   }

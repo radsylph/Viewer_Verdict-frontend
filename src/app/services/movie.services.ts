@@ -19,7 +19,6 @@ export class MovieService {
   private Series: SerieInterface[] = [];
   private apiKey: string = 'a724b82db302a18f04121937ea04afa7';
   private BackenUrl: string =
-    'http://localhost:7338' ||
     'https://viewerverdict-backend-production.up.railway.app';
 
   constructor(private http: HttpClient) {}

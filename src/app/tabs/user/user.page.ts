@@ -126,6 +126,7 @@ export class UserPage implements OnInit {
       this.ionViewWillEnter();
     }
   }
+
   presentActionSheet() {
     this.actionSheet
       .create({
@@ -170,6 +171,13 @@ export class UserPage implements OnInit {
     }
   }
 
+  async sendMessage(userId: any) {
+    await Preferences.set({
+      key: 'userToSee',
+      value: userId.toString(),
+    });
+    this.navCtrl.navigateForward('/tabs/chat');
+  }
   async ngOnInit() {
     //this.logOut();
     console.log('hola');

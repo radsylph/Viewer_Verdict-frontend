@@ -15,16 +15,6 @@
         <ion-icon name="cog-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
-    <!-- <ion-buttons fill="clear" slot="end" *ngIf="user._id === userLogged">
-      <ion-button
-        color="funaprimary"
-        class="User-options-btn"
-        (click)="editUser()"
-      >
-        <ion-icon name="options"></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -47,14 +37,14 @@
           <ion-img [src]="user.profilePicture"></ion-img>
         </ion-avatar>
         <ion-card-header>
-          <ion-card-title
-            ><span class="user"
-              >{{user.name}} {{user.lastname}}</span
-            ></ion-card-title
-          >
-          <ion-card-subtitle class="userName" color="funacomplemen0"
-            ><span class="user">{{user.username}}</span></ion-card-subtitle
-          >
+          <ion-card-header class="ion-text-center">
+            <ion-card-title>
+              <span class="user">{{user.name}} {{user.lastname}}</span>
+            </ion-card-title>
+            <ion-card-subtitle class="userName" color="funacomplemen0">
+              <span class="user">{{user.username}}</span>
+            </ion-card-subtitle>
+          </ion-card-header>
         </ion-card-header>
         <ion-button
           class="Followbn_edit"
@@ -63,6 +53,7 @@
           expand="block"
           style="margin: 10px; padding: 10px"
           *ngIf="user._id != userLogged"
+          (click)="sendMessage(user._id)"
           >Send Message</ion-button
         >
 

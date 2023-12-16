@@ -1,75 +1,109 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-item class="header" >
+    <ion-item class="header ion-text-center">
       <ion-button slot="start" fill="clear">
-        <ion-button class="backbtn" routerLink="/tabs/community" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+        <ion-button
+          class="backbtn"
+          routerLink="/tabs/community"
+          routerDirection="back"
+        >
+          <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
-      <ion-avatar slot="start" class="avatar">
-        <img  alt="Silhouette of mountains" src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg" />
-      </ion-avatar>
-      <ion-label>Item</ion-label>
+      </ion-button>
+      <div
+        style="
+          display: flex;
+
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <ion-avatar
+          class="avatarUser"
+          *ngIf="user.profilePicture === 'image.png'"
+        >
+          <ion-img
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+          ></ion-img>
+        </ion-avatar>
+        <ion-avatar
+          class="avatarUser"
+          *ngIf="user.profilePicture != 'image.png'"
+        >
+          <ion-img [src]="user.profilePicture"></ion-img>
+        </ion-avatar>
+        <ion-label style="padding: 5px"> {{user.username}}</ion-label>
+      </div>
     </ion-item>
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    <div *ngIf="!isloading">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+    <div *ngIf="isloading">
+      <ion-progress-bar
+        type="indeterminate"
+        style="display: none"
+      ></ion-progress-bar>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-backdrop [visible]="true"></ion-backdrop>
-<ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <ion-content style="height: 100%;">
-  <ion-list class="chat" lines="none" >
-    <ion-item >
-      <ion-card class="user1" slot="start" >
-        <ion-card-content >
-          sadddddddddddddddddddddddddd
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          1111111111111111111
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          ssssssssssssssssssss
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ion-content>
-
-
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
+<ion-content>
+  <ion-content [fullscreen]="true">
+    <ion-refresher
+      slot="fixed"
+      [pullFactor]="0.5"
+      [pullMin]="100"
+      [pullMax]="200"
+      (ionRefresh)="handleRefresh($event)"
+    >
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-content style="background-color: aliceblue">
+      <ion-list class="chat" lines="none">
+        <ion-item *ngFor="let message of messages">
+          <ion-card
+            class="user1"
+            slot="start"
+            *ngIf="message.idSender == userId"
+          >
+            <ion-card-content> {{message.message}} </ion-card-content>
+          </ion-card>
+          <ion-card class="user2" slot="end" *ngIf="message.idSentTo == userId">
+            <ion-card-content> {{message.message}} </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-content>
+  </ion-content>
 </ion-content>
 <ion-footer>
-
   <ion-toolbar>
-    
     <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-textarea  [autoGrow]="true" label="send a message" labelPlacement="floating" fill="outline"></ion-textarea>
-    </ion-col>
-      <ion-col size="2">
-          <ion-button ><ion-icon name="send"></ion-icon></ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+      <ion-row>
+        <ion-col>
+          <ion-textarea
+            [autoGrow]="true"
+            label="send a message"
+            labelPlacement="floating"
+            fill="outline"
+            [(ngModel)]="message"
+          ></ion-textarea>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button (click)="sendMessage()"
+            ><ion-icon name="send"></ion-icon
+          ></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-footer>

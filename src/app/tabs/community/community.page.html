@@ -3,11 +3,6 @@
     <ion-grid [fixed]="true">
       <ion-row>
         <ion-col class="header">
-          <ion-avatar class="miniAvatar">
-            <ion-img src="../../../../assets/img/serve.png"></ion-img>
-          </ion-avatar>
-        </ion-col>
-        <ion-col class="header">
           <img
             class="centerheader"
             src="../../assets/img/logo_VV_blanco_mini.png"
@@ -16,26 +11,49 @@
       </ion-row>
     </ion-grid>
 
-    <ion-segment value="PEOPLE">
-      <ion-segment-button value="PEOPLE">
+    <ion-segment [(ngModel)]="segmentModel">
+      <ion-segment-button value="people">
         <ion-label>PEOPLE</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="GROUPS">
+      <ion-segment-button value="groups">
         <ion-label>GROUPS</ion-label>
       </ion-segment-button>
     </ion-segment>
-    <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+    <div *ngIf="!isloading">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+    <div *ngIf="isloading">
+      <ion-progress-bar
+        type="indeterminate"
+        style="display: none"
+      ></ion-progress-bar>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-backdrop [visible]="true"></ion-backdrop> -->
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
+
 <ion-content>
-  <ion-grid>
+  <ion-refresher
+    slot="fixed"
+    [pullFactor]="0.5"
+    [pullMin]="100"
+    [pullMax]="200"
+    (ionRefresh)="handleRefresh($event)"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid *ngIf="segmentModel === 'groups'">
     <ion-row lines="none">
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('Accion')"
       >
         <ion-card>
           <ion-thumbnail
@@ -57,7 +75,7 @@
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('Anime')"
       >
         <ion-card>
           <ion-thumbnail
@@ -79,7 +97,7 @@
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('terror')"
       >
         <ion-card>
           <ion-thumbnail
@@ -101,7 +119,7 @@
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('romance')"
       >
         <ion-card>
           <ion-thumbnail
@@ -123,7 +141,7 @@
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('comics')"
       >
         <ion-card>
           <ion-thumbnail
@@ -145,7 +163,7 @@
       <ion-col
         size="6"
         class="P_cart ion-activatable ripple-parent"
-        routerLink="/tabs/scream-movies"
+        (click)="goToGroup('drama')"
       >
         <ion-card>
           <ion-thumbnail
@@ -166,23 +184,31 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-card>
+
+  <ion-card *ngIf="segmentModel === 'people'">
     <ion-card-content>
       <ion-list>
-        <ion-item
-          routerLink="/tabs/chat"
-          *ngFor="let item of items; let index"
-          routerDirection="forward"
-        >
-          <ion-avatar slot="start" class="avatar">
-            <img
-              alt="Silhouette of mountains"
-              src="https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/08/warhammer-40k-space-marine-2-starship-troopers-hordes-world-war-z-550x309.jpg"
-            />
-          </ion-avatar>
-          <ion-label>Item</ion-label>
-          <ion-badge slot="end">11</ion-badge>
-        </ion-item>
+        <ng-container *ngFor="let user of users; let index">
+          <ion-item *ngIf="user._id != userId" (click)="goToUser(user._id)">
+            <ion-avatar
+              class="avatarUser"
+              *ngIf="user.profilePicture === 'image.png'"
+            >
+              <ion-img
+                alt="Silhouette of a person's head"
+                src="https://ionicframework.com/docs/img/demos/avatar.svg"
+              ></ion-img>
+            </ion-avatar>
+            <ion-avatar
+              class="avatarUser"
+              *ngIf="user.profilePicture != 'image.png'"
+              (click)="goToUser(user._id)"
+            >
+              <ion-img [src]="user.profilePicture" alt="user pfp"></ion-img>
+            </ion-avatar>
+            <ion-label class="ion-text-center">{{user.username}}</ion-label>
+          </ion-item>
+        </ng-container>
       </ion-list>
     </ion-card-content>
   </ion-card>

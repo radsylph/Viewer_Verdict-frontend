@@ -1,76 +1,94 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-item class="header" >
+    <ion-item class="header">
       <ion-button slot="start" fill="clear">
-        <ion-button class="backbtn" routerLink="/tabs/community" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
-        </ion-button>
-      <ion-label>Item</ion-label>
+        <ion-button
+          class="backbtn"
+          (click)="goBack()"
+          routerDirection="back"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></ion-button>
+      </ion-button>
+      <ion-label class="ion-align-self-center">{{roomId}}</ion-label>
     </ion-item>
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    <div *ngIf="!isloading">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+    <div *ngIf="isloading">
+      <ion-progress-bar
+        type="indeterminate"
+        style="display: none"
+      ></ion-progress-bar>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-backdrop [visible]="true"></ion-backdrop>
+<div *ngIf="!isloading">
+  <ion-backdrop [visible]="true"></ion-backdrop>
+</div>
+<div *ngIf="isloading">
+  <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+</div>
+
 <ion-content [fullscreen]="true">
-  <ion-content style="height: 100%;">
-  <ion-list class="chat" lines="none" >
-    <ion-item >
-      <ion-card class="user1" slot="start" >
-    
-          <ion-grid>
-            <ion-row>
-              <ion-col size="auto" class="username"><ion-label>(nombre de usuario) puedes cambiar el color si lo crees necesario</ion-label></ion-col>
-            </ion-row>
-          </ion-grid>
+  <ion-refresher
+    slot="fixed"
+    [pullFactor]="0.5"
+    [pullMin]="100"
+    [pullMax]="200"
+    (ionRefresh)="handleRefresh($event)"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-        <ion-card-content >
-          sadddddddddddddddddddddddddd
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          1111111111111111111
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item >
-      <ion-card class="userlogin" slot="end" >
-        <ion-card-content >
-          ssssssssssssssssssss
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ion-content>
-
-
+  <ion-content style="height: 100%">
+    <ion-list class="chat" lines="none">
+      <ion-item *ngFor="let message of messages">
+        <ion-card
+          class="message-card user1"
+          slot="end"
+          *ngIf="message.idSender == userId"
+        >
+          <ion-card-content class="message-content">
+            {{message.message}}
+          </ion-card-content>
+        </ion-card>
+        <ion-card
+          class="message-card user2"
+          slot="start"
+          *ngIf="message.idSender != userId"
+        >
+          <ion-label class="message-sender">{{message.sender}}</ion-label>
+          <ion-card-content class="message-content">
+            {{message.message}}
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-content>
 </ion-content>
 <ion-footer>
-
   <ion-toolbar>
-    
     <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-textarea  [autoGrow]="true" label="send a message" labelPlacement="floating" fill="outline"></ion-textarea>
-    </ion-col>
-      <ion-col size="2">
-          <ion-button ><ion-icon name="send"></ion-icon></ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+      <ion-row>
+        <ion-col>
+          <ion-textarea
+            [autoGrow]="true"
+            label="send a message"
+            labelPlacement="floating"
+            fill="outline"
+            [(ngModel)]="message"
+          ></ion-textarea>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button (click)="sendMessage()"
+            ><ion-icon name="send"></ion-icon
+          ></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-footer>
