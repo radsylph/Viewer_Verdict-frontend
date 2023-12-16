@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
   }
 
+
   intercept(req: any, next: HttpHandler): Observable<HttpEvent<any>> {
     const excludedRoutes = [
       'https://viewerverdict-backend-production.up.railway.app/auth/register',
