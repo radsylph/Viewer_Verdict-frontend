@@ -196,7 +196,7 @@ export class CataloguePage implements OnInit {
   }
 
   async handleChange(event: any, type: string) {
-    await this.getMedias();
+    // await this.getMedias();
     switch (type) {
       case 'genre':
         if (event.detail.value.length === 0) {
