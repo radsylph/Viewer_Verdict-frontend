@@ -32,6 +32,8 @@
     "ionicons": "^7.0.0",
     "ng-recaptcha": "^13.2.1",
     "rxjs": "~7.8.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
     "swiper": "^11.0.5",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

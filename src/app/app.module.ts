@@ -11,6 +11,7 @@ import { SessionService } from './services/session.services';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { ChatService } from './services/chat.services';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +29,7 @@ import { CommonModule } from '@angular/common';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     MovieService,
     SessionService,
+    ChatService,
   ],
   bootstrap: [AppComponent],
 })
