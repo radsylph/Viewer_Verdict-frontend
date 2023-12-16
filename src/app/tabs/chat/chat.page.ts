@@ -108,6 +108,9 @@ export class ChatPage implements OnInit {
   }
 
   async sendMessage() {
+    if (this.message === '') {
+      return;
+    }
     const message = {
       message: this.message,
       sender: this.user2,
